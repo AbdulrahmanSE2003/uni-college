@@ -23,7 +23,7 @@ const studentSchema: Schema<IStudent> = new mongoose.Schema(
   { timestamps: true },
 );
 
-studentSchema.index({ userId: 1 }, { unique: true });
+studentSchema.index({ userId: 1 }, { unique: true }); // one profile per user
 studentSchema.index({ userId: 1, gradeId: 1 });
 studentSchema.index({ gradeId: 1 });
 
