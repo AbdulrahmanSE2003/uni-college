@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import mongoSanitize from "express-mongo-sanitize";
+import { globalErrorHandler } from "./middleware/errorMiddleware";
+import userRoutes from "./routes/userRoutes";
 
 const app = express();
 
@@ -37,6 +39,7 @@ app.use(
 );
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
-// app.use("/api/v1/", routes)
+app.use("/api/v1/users", userRoutes);
 
+app.use(globalErrorHandler);
 export default app;
