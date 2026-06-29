@@ -62,7 +62,7 @@ export const login = catchAsync(
 
     const user = await User.findOne({ email }).select("+password");
 
-    if (!user || !(await user.correctPassword(password, user.password))) {
+    if (!user || !(await user.matchPassword(password))) {
       return next(new AppError("Invalid Credentials.", 401));
     }
 
@@ -74,10 +74,9 @@ export const protect = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     let token: string | undefined;
 
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
+    if (req.cookies?.jwt) {
+      token = req.cookies.jwt;
+    } else if (req.headers.authorization?.startsWith("Bearer")) {
       token = req.headers.authorization.split(" ")[1];
     }
 
@@ -99,6 +98,20 @@ export const protect = catchAsync(
       return next(
         new AppError("The user belonging to this token no longer exists.", 401),
       );
+    }
+
+    if (freshUser.passwordChangedAt) {
+      const changedAt = Math.floor(
+        freshUser.passwordChangedAt.getTime() / 1000,
+      );
+      if (decoded.iat && decoded.iat < changedAt) {
+        return next(
+          new AppError(
+            "Password was recently changed. Please log in again.",
+            401,
+          ),
+        );
+      }
     }
 
     req.user = freshUser;
@@ -143,7 +156,7 @@ export const forgotPassword = catchAsync(
       });
     } catch (e) {
       user.passwordResetToken = undefined;
-      user.passwordResetExpires = undefined;
+      user.passwordResetExpire = undefined;
       await user.save({ validateBeforeSave: false });
 
       console.error(e);
@@ -182,3 +195,11 @@ export const resetPassword = catchAsync(
     createSendToken(user, 200, res);
   },
 );
+
+export const logout = (req: Request, res: Response): void => {
+  res.cookie("jwt", "loggedOut", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: true });
+};

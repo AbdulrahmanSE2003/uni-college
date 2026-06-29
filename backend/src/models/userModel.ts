@@ -1,6 +1,7 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, UnionSchemaDefinition } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
+import crypto from "node:crypto";
 
 export interface IUser extends Document {
   name: string;
@@ -11,7 +12,11 @@ export interface IUser extends Document {
   role: "admin" | "teacher" | "student";
   lastSignIn: Date;
   passwordChangedAt: Date;
+  passwordResetExpire: Date | undefined;
+  passwordResetToken: string | undefined;
   createdAt: Date;
+  matchPassword: (enteredPassword: string) => Promise<boolean>;
+  createPasswordResetToken(): string;
 }
 
 const userSchema: Schema<IUser> = new mongoose.Schema(
@@ -58,7 +63,10 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     },
     isActive: { type: Boolean, default: true },
     lastSignIn: Date,
+
     passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpire: Date,
   },
 
   {
@@ -90,6 +98,19 @@ userSchema.methods.matchPassword = async function (
   enteredPassword: string,
 ): Promise<boolean> {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.methods.createPasswordResetToken = function (): string {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  this.passwordResetExpire = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
+
+  return resetToken; // Send plain token via email, store hashed in DB
 };
 
 const User = mongoose.model<IUser>("User", userSchema);
