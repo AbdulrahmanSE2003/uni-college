@@ -1,6 +1,5 @@
 import mongoose, {
   Document,
-  ObjectId,
   Schema,
   Types,
   UnionSchemaDefinition,
