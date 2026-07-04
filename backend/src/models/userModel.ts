@@ -1,9 +1,16 @@
-import mongoose, { Document, Schema, UnionSchemaDefinition } from "mongoose";
+import mongoose, {
+  Document,
+  ObjectId,
+  Schema,
+  Types,
+  UnionSchemaDefinition,
+} from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 import crypto from "node:crypto";
 
 export interface IUser extends Document {
+  _id: Types.ObjectId;
   name: string;
   email: string;
   password: string;

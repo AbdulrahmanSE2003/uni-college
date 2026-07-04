@@ -23,7 +23,7 @@ export const createStudent = catchAsync(async (req, res, next) => {
   session.startTransaction();
 
   try {
-    const [user] = await User.create(
+    const users = await User.create(
       [
         {
           name,
@@ -35,6 +35,7 @@ export const createStudent = catchAsync(async (req, res, next) => {
       ],
       { session },
     );
+    const user = users[0];
 
     const academicId = generateStudentId();
 
@@ -43,7 +44,7 @@ export const createStudent = catchAsync(async (req, res, next) => {
     });
     const subjectIds = subjects.map((s) => s._id);
 
-    const [student] = await Student.create(
+    const students = await Student.create(
       [
         {
           userId: user._id,
@@ -54,6 +55,7 @@ export const createStudent = catchAsync(async (req, res, next) => {
       ],
       { session },
     );
+    const student = students[0];
 
     await sendWelcomeEmail({ email, name, role: "student", tempPassword });
 
@@ -70,7 +72,7 @@ export const createStudent = catchAsync(async (req, res, next) => {
 export const createTeacher = catchAsync(async (req, res, next) => {
   const { name, email, grades, subjects } = req.body;
 
-  if (!name || !email || !grades || subjects)
+  if (!name || !email || !grades || !subjects)
     return next(
       new AppError("Invalid operation, please provide needed data", 400),
     );
@@ -81,7 +83,7 @@ export const createTeacher = catchAsync(async (req, res, next) => {
   session.startTransaction();
 
   try {
-    const [user] = await User.create(
+    const users = await User.create(
       [
         {
           name,
@@ -93,8 +95,9 @@ export const createTeacher = catchAsync(async (req, res, next) => {
       ],
       { session },
     );
+    const user = users[0];
 
-    const [teacher] = await Teacher.create(
+    const teachers = await Teacher.create(
       [
         {
           userId: user._id,
@@ -104,6 +107,7 @@ export const createTeacher = catchAsync(async (req, res, next) => {
       ],
       { session },
     );
+    const teacher = teachers[0];
 
     await sendWelcomeEmail({ name, email, role: "teacher", tempPassword });
 
