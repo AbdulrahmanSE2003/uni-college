@@ -8,7 +8,7 @@ import User from "../models/userModel";
 import { sendEmail } from "../utils/sendEmail";
 import resHandler from "../utils/resHandler";
 import Student from "../models/studentModel";
-import { generateStudentId } from "../utils/studentId";
+import { generateStudentId } from "../utils/generateStudentId";
 import Teacher from "../models/teacherModel";
 import { ObjectId, Types } from "mongoose";
 
