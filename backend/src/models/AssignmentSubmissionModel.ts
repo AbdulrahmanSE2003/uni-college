@@ -22,7 +22,7 @@ const assignmentSubmissionSchema = new Schema<IAssignmentSubmission>({
   fileUrl: { type: String, required: true },
   submittedAt: { type: Date, default: Date.now },
   feedback: String,
-  score: { type: Number, required: true },
+  score: { type: Number },
   status: { type: String, enum: ["submitted", "graded"], default: "submitted" },
 });
 
