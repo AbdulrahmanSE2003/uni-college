@@ -8,7 +8,7 @@ interface Results extends Document {
   enteredAt: Date;
 }
 
-export interface ISCoreREcord extends Document {
+export interface ISCoreRecord extends Document {
   studentId: ObjectId;
   subjectId: ObjectId;
   academicYear: string;
@@ -16,7 +16,7 @@ export interface ISCoreREcord extends Document {
   final: Results;
 }
 
-const ScoreRecordSchema = new Schema<ISCoreREcord>({
+const ScoreRecordSchema = new Schema<ISCoreRecord>({
   studentId: { type: mongoose.Schema.ObjectId, ref: "Student", required: true },
   subjectId: { type: mongoose.Schema.ObjectId, ref: "Subject", required: true },
   academicYear: { type: String, required: true },
@@ -44,7 +44,7 @@ const ScoreRecordSchema = new Schema<ISCoreREcord>({
   },
 });
 
-const SCoreREcord = mongoose.model<ISCoreREcord>(
+const SCoreREcord = mongoose.model<ISCoreRecord>(
   "SCoreREcord",
   ScoreRecordSchema,
 );

@@ -48,11 +48,11 @@ export const createStudent = catchAsync(async (req, res, next) => {
       gradeId,
     });
 
+    console.log(subjects);
     if (!subjects)
       return next(
         new AppError("Invalid operation, error while assigning subjects", 400),
       );
-    console.log(subjects);
 
     const studentAcc = await Student.create({
       userId: user._id,

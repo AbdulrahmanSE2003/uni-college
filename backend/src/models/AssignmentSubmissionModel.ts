@@ -1,6 +1,6 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
-export interface IAssignment extends Document {
+export interface IAssignmentSubmission extends Document {
   studentId: ObjectId;
   assignmentId: ObjectId;
   gradeId: ObjectId;
@@ -11,7 +11,7 @@ export interface IAssignment extends Document {
   status: "submitted" | "graded";
 }
 
-const assignmentSchema = new Schema<IAssignment>({
+const assignmentSubmissionSchema = new Schema<IAssignmentSubmission>({
   studentId: { type: mongoose.Schema.ObjectId, ref: "Student", required: true },
   assignmentId: {
     type: mongoose.Schema.ObjectId,
@@ -26,9 +26,15 @@ const assignmentSchema = new Schema<IAssignment>({
   status: { type: String, enum: ["submitted", "graded"], default: "submitted" },
 });
 
-assignmentSchema.index({ subjectId: 1, gradeId: 1 });
-assignmentSchema.index({ deadlineDate: 1 });
+assignmentSubmissionSchema.index(
+  { assignmentId: 1, studentId: 1 },
+  { unique: true },
+);
+assignmentSubmissionSchema.index({ deadlineDate: 1 });
 
-const Assignment = mongoose.model<IAssignment>("Assignment", assignmentSchema);
+const AssignmentSubmission = mongoose.model<IAssignmentSubmission>(
+  "AssignmentSubmission",
+  assignmentSubmissionSchema,
+);
 
-export default Assignment;
+export default AssignmentSubmission;
