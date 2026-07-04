@@ -7,6 +7,10 @@ import { catchAsync } from "../utils/catchAsync";
 import User from "../models/userModel";
 import { sendEmail } from "../utils/sendEmail";
 import resHandler from "../utils/resHandler";
+import Student from "../models/studentModel";
+import { generateStudentId } from "../utils/studentId";
+import Teacher from "../models/teacherModel";
+import { ObjectId, Types } from "mongoose";
 
 const signToken = (id: string): string => {
   if (!process.env.JWT_SECRET)
@@ -38,19 +42,6 @@ const createSendToken = (
 
   resHandler(res, statusCode, "auth", { user, token });
 };
-
-export const signUp = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const newUser = await User.create({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      passwordConfirm: req.body.passwordConfirm,
-    });
-
-    createSendToken(newUser, 201, res);
-  },
-);
 
 export const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

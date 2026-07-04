@@ -1,9 +1,9 @@
-import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export interface ITeacher extends Document {
-  userId: ObjectId;
-  grades: ObjectId[];
-  subjectIds: ObjectId[];
+  userId: Types.ObjectId;
+  grades: Types.ObjectId[];
+  subjectIds: Types.ObjectId[];
   qualification: string;
   joiningDate: Date;
 }
@@ -16,7 +16,7 @@ const teacherSchema = new Schema<ITeacher>(
       { type: mongoose.Schema.ObjectId, ref: "Subject", required: true },
     ],
     qualification: String,
-    joiningDate: Date,
+    joiningDate: { type: Date, default: Date.now() },
   },
   { timestamps: true },
 );

@@ -10,6 +10,7 @@ export interface IUser extends Document {
   passwordConfirm: string;
   isActive: boolean;
   role: "admin" | "teacher" | "student";
+  isFirstLogin: boolean;
   lastSignIn: Date;
   passwordChangedAt: Date;
   passwordResetExpire: Date | undefined;
@@ -62,6 +63,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
       default: "student",
     },
     isActive: { type: Boolean, default: true },
+    isFirstLogin: { type: Boolean, default: true },
     lastSignIn: Date,
 
     passwordChangedAt: Date,

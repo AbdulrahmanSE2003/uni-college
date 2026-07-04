@@ -10,6 +10,7 @@ import userRoutes from "./routes/userRoutes";
 import { inngest } from "./config/inngest";
 import { gradeExamFunction } from "./inngest";
 import { serve } from "inngest/express";
+import gradeRoutes from "./routes/gradeRoutes";
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use(
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/grades", gradeRoutes);
 
 app.use(
   "/api/inngest",

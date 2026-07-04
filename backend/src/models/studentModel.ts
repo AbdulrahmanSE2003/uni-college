@@ -1,10 +1,10 @@
-import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export interface IStudent extends Document {
-  userId: ObjectId;
-  studentId: string;
-  gradeId: ObjectId;
-  subjectIds: ObjectId[];
+  userId: Types.ObjectId;
+  academicId: string;
+  gradeId: Types.ObjectId;
+  subjectIds: Types.ObjectId[];
   gpa: number;
   behaviorNotes: string;
 }
@@ -12,7 +12,7 @@ export interface IStudent extends Document {
 const studentSchema: Schema<IStudent> = new mongoose.Schema(
   {
     userId: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
-    studentId: { type: String, required: true, unique: true },
+    academicId: { type: String, required: true, unique: true },
     gradeId: { type: mongoose.Schema.ObjectId, ref: "Grade", required: true },
     subjectIds: [
       { type: mongoose.Schema.ObjectId, ref: "Subject", required: true },

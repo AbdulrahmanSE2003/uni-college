@@ -64,17 +64,24 @@ export const getOne = <T>(
   });
 };
 
-export const createOne = <T>(Model: Model<T>): RequestHandler => {
+export const createOne = <T>(
+  Model: Model<T>,
+  onSuccess?: (doc: any, req: Request) => Promise<void>,
+): RequestHandler => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const newDoc = await Model.create(req.body);
 
     const label = `new${Model.modelName}`;
+    if (onSuccess) await onSuccess(newDoc, req);
 
     resHandler(res, 201, label, newDoc);
   });
 };
 
-export const updateOne = <T>(Model: Model<T>): RequestHandler => {
+export const updateOne = <T>(
+  Model: Model<T>,
+  onSuccess?: (doc: any, req: Request) => Promise<void>,
+): RequestHandler => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
 
@@ -94,13 +101,18 @@ export const updateOne = <T>(Model: Model<T>): RequestHandler => {
       );
     }
 
+    if (onSuccess) await onSuccess(updatedDoc, req);
+
     const label = `updated${Model.modelName}`;
 
     resHandler(res, 200, label, updatedDoc);
   });
 };
 
-export const deleteOne = <T>(Model: Model<T>): RequestHandler => {
+export const deleteOne = <T>(
+  Model: Model<T>,
+  onSuccess?: (doc: any, req: Request) => Promise<void>,
+): RequestHandler => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
 
@@ -115,6 +127,8 @@ export const deleteOne = <T>(Model: Model<T>): RequestHandler => {
         ),
       );
     }
+
+    if (onSuccess) await onSuccess(docToDelete, req);
 
     res.status(204).send();
   });
