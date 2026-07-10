@@ -1,4 +1,5 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import { Types } from "mongoose";
 
 interface Question {
   question: string;
@@ -7,9 +8,9 @@ interface Question {
 }
 
 export interface IExam extends Document {
-  teacherId: ObjectId;
-  subjectId: ObjectId;
-  gradeId: ObjectId;
+  teacherId: Types.ObjectId;
+  subjectId: Types.ObjectId;
+  gradeId: Types.ObjectId;
   questions: Question[];
   topic: string; // for AI
   difficulty: "easy" | "medium" | "hard"; // for AI

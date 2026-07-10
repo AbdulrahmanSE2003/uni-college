@@ -1,11 +1,11 @@
-import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import mongoose, { Document, ObjectId, Schema, Types } from "mongoose";
 import Student from "./studentModel";
 import Subject from "./subjectModel";
 
 export interface IGrade extends Document {
   name: string;
   academicYear: string;
-  createdBy: ObjectId;
+  createdBy: Types.ObjectId;
 }
 
 const gradeSchema: Schema<IGrade> = new mongoose.Schema(

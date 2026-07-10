@@ -1,7 +1,8 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import { Types } from "mongoose";
 
 interface Answer {
-  questionId: ObjectId;
+  questionId: Types.ObjectId;
   isCorrect: boolean;
   selectedAnswer: string;
 }
@@ -13,8 +14,8 @@ interface Result {
 }
 
 export interface ISubmission extends Document {
-  examId: ObjectId;
-  studentId: ObjectId;
+  examId: Types.ObjectId;
+  studentId: Types.ObjectId;
   answers: Answer[];
   result: Result;
   status: "submitted" | "scored";

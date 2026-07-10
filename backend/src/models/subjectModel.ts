@@ -1,4 +1,7 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import Teacher from "./teacherModel";
+import Student from "./studentModel";
+import { Types } from "mongoose";
 
 interface Material {
   title: string;
@@ -7,8 +10,8 @@ interface Material {
 
 export interface ISubject extends Document {
   title: string;
-  teacherId: ObjectId;
-  gradeId: ObjectId;
+  teacherId: Types.ObjectId;
+  gradeId: Types.ObjectId;
   materials: Material[];
 }
 
@@ -29,6 +32,37 @@ const subjectSchema: Schema<ISubject> = new mongoose.Schema(
 
 subjectSchema.index({ title: 1, gradeId: 1 });
 subjectSchema.index({ gradeId: 1 });
+
+subjectSchema.post("save", async function () {
+  // Add to all students in this grade
+  await Student.updateMany(
+    { gradeId: this.gradeId },
+    { $addToSet: { subjectIds: this._id } },
+  );
+
+  // Add to assigned teacher
+  await Teacher.findOneAndUpdate(
+    { userId: this.teacherId },
+    { $addToSet: { subjectIds: this._id } },
+  );
+});
+
+subjectSchema.pre("findOneAndDelete", async function () {
+  const subject = await this.model.findOne(this.getFilter());
+  if (!subject) return;
+
+  // Remove from all students
+  await Student.updateMany(
+    { gradeId: subject.gradeId },
+    { $pull: { subjectIds: subject._id } },
+  );
+
+  // Remove from teacher
+  await Teacher.findOneAndUpdate(
+    { userId: subject.teacherId },
+    { $pull: { subjectIds: subject._id } },
+  );
+});
 
 const Subject = mongoose.model<ISubject>("Subject", subjectSchema);
 

@@ -1,8 +1,8 @@
-import mongoose, { Document, ObjectId } from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 import { Schema } from "mongoose";
 
 export interface IActivitiesLog extends Document {
-  userId: ObjectId;
+  userId: Types.ObjectId;
   action: string;
   details: string;
   createdAt: Date;

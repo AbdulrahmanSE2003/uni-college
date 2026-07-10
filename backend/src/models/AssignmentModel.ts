@@ -1,9 +1,15 @@
-import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import mongoose, {
+  Document,
+  ObjectId,
+  Schema,
+  TypeExpressionOperatorReturningObjectId,
+} from "mongoose";
+import { Types } from "mongoose";
 
 export interface IAssignment extends Document {
-  teacherId: ObjectId;
-  subjectId: ObjectId;
-  gradeId: ObjectId;
+  teacherId: Types.ObjectId;
+  subjectId: Types.ObjectId;
+  gradeId: Types.ObjectId;
   title: string;
   fileUrl: string;
   publishedAt: Date;

@@ -12,6 +12,7 @@ import { gradeExamFunction } from "./inngest";
 import { serve } from "inngest/express";
 import gradeRoutes from "./routes/gradeRoutes";
 import adminRoutes from "./routes/adminRoutes";
+import subjectRoutes from "./routes/subjectRoutes";
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use(
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/grades", gradeRoutes);
+app.use("/api/v1/subjects", subjectRoutes);
 app.use("/api/v1/admin", adminRoutes);
 
 app.use(

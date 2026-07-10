@@ -1,16 +1,17 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import { Types } from "mongoose";
 
 interface Results extends Document {
   score: number;
   totalMarks: number;
   percentage: number;
-  enteredBy: ObjectId;
+  enteredBy: Types.ObjectId;
   enteredAt: Date;
 }
 
 export interface ISCoreRecord extends Document {
-  studentId: ObjectId;
-  subjectId: ObjectId;
+  studentId: Types.ObjectId;
+  subjectId: Types.ObjectId;
   academicYear: string;
   midTerm: Results;
   final: Results;

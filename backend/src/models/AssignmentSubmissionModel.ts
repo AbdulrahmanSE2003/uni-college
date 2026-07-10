@@ -1,9 +1,9 @@
-import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export interface IAssignmentSubmission extends Document {
-  studentId: ObjectId;
-  assignmentId: ObjectId;
-  gradeId: ObjectId;
+  studentId: Types.ObjectId;
+  assignmentId: Types.ObjectId;
+  gradeId: Types.ObjectId;
   fileUrl: string;
   feedback: string;
   submittedAt: Date;

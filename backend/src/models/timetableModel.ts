@@ -1,8 +1,9 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import { Types } from "mongoose";
 
 interface TimeSlot {
-  teacherId: ObjectId;
-  subjectId: ObjectId;
+  teacherId: Types.ObjectId;
+  subjectId: Types.ObjectId;
   day: "SAT" | "SUN" | "MON" | "TUE" | "WED" | "THU";
   startTime: Date;
   endTime: Date;
@@ -10,9 +11,9 @@ interface TimeSlot {
 }
 
 export interface ITimetable extends Document {
-  gradeId: ObjectId;
+  gradeId: Types.ObjectId;
   timeSlots: TimeSlot[];
-  generatedBy: ObjectId;
+  generatedBy: Types.ObjectId;
 }
 
 const timetableSchema = new Schema<ITimetable>({
