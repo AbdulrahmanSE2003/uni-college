@@ -1,4 +1,4 @@
-import { geminiModel } from "../config/gemini";
+import { getGeminiModel } from "../config/gemini";
 
 interface GenerateExamParams {
   subject: string;
@@ -34,7 +34,7 @@ export const generateExamQuestions = async ({
     [{"question":"...","options":["A","B","C","D"],"correctAnswer":"A"}]
   `;
 
-  const result = await geminiModel.generateContent(prompt);
+  const result = await getGeminiModel().generateContent(prompt);
   const text = result.response.text();
 
   // Strip any accidental markdown backticks
@@ -95,7 +95,7 @@ export const generateTimetable = async ({
     [{"day":"SAT","subjectName":"Math","teacherName":"Mr. Ahmed","startTime":"08:00","endTime":"09:00"}]
   `;
 
-  const result = await geminiModel.generateContent(prompt);
+  const result = await getGeminiModel().generateContent(prompt);
   const text = result.response.text();
   const clean = text.replace(/```json|```/g, "").trim();
 

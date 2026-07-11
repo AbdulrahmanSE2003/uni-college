@@ -13,6 +13,7 @@ import { serve } from "inngest/express";
 import gradeRoutes from "./routes/gradeRoutes";
 import adminRoutes from "./routes/adminRoutes";
 import subjectRoutes from "./routes/subjectRoutes";
+import examRoutes from "./routes/examRoutes";
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use(
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/grades", gradeRoutes);
 app.use("/api/v1/subjects", subjectRoutes);
+app.use("/api/v1/exams", examRoutes);
 app.use("/api/v1/admin", adminRoutes);
 
 app.use(

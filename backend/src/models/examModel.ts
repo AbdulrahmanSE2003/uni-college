@@ -58,7 +58,7 @@ const examSchema = new Schema<IExam>(
       required: true,
       default: "draft",
     },
-    duration: { type: Number, required: true }, //In mins
+    duration: { type: Number, required: true, default: 30 }, //In mins
     deadline: { type: Date, required: true },
     totalMarks: Number,
   },
