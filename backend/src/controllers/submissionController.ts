@@ -1,9 +1,9 @@
+import { inngest } from "../config/inngest";
 import { Types } from "mongoose";
-import Submission from "../models/submissionModel";
 import { AppError } from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
+import Submission from "../models/submissionModel";
 import Student from "../models/studentModel";
-import { inngest } from "../config/inngest";
 import resHandler from "../utils/resHandler";
 
 export const submitQuiz = catchAsync(async (req, res, next) => {
@@ -49,7 +49,7 @@ export const getMySubmissions = catchAsync(async (req, res, next) => {
   }).populate("examId", "topic difficulty duration");
 
   if (!submissions.length)
-    res.status(200).json({
+    return res.status(200).json({
       status: true,
       message: "There is no submission for this student.",
     });
