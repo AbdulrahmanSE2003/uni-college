@@ -9,7 +9,7 @@ interface Results extends Document {
   enteredAt: Date;
 }
 
-export interface ISCoreRecord extends Document {
+export interface IScoreRecord extends Document {
   studentId: Types.ObjectId;
   subjectId: Types.ObjectId;
   academicYear: string;
@@ -17,25 +17,25 @@ export interface ISCoreRecord extends Document {
   final: Results;
 }
 
-const ScoreRecordSchema = new Schema<ISCoreRecord>({
+const scoreRecordSchema = new Schema<IScoreRecord>({
   studentId: { type: mongoose.Schema.ObjectId, ref: "Student", required: true },
   subjectId: { type: mongoose.Schema.ObjectId, ref: "Subject", required: true },
   academicYear: { type: String, required: true },
   midTerm: {
-    score: { type: Number, required: true },
-    totalMarks: { type: Number, required: true },
-    percentage: { type: Number, required: true },
+    score: { type: Number },
+    totalMarks: { type: Number },
+    percentage: { type: Number },
     enteredBy: {
       type: mongoose.Schema.ObjectId,
       ref: "Teacher",
       required: true,
     },
-    enteredAt: { type: Date, required: true },
+    enteredAt: { type: Date },
   },
   final: {
-    score: { type: Number, required: true },
-    totalMarks: { type: Number, required: true },
-    percentage: { type: Number, required: true },
+    score: { type: Number },
+    totalMarks: { type: Number },
+    percentage: { type: Number },
     enteredBy: {
       type: mongoose.Schema.ObjectId,
       ref: "Teacher",
@@ -45,9 +45,14 @@ const ScoreRecordSchema = new Schema<ISCoreRecord>({
   },
 });
 
-const SCoreREcord = mongoose.model<ISCoreRecord>(
-  "SCoreREcord",
-  ScoreRecordSchema,
+scoreRecordSchema.index(
+  { studentId: 1, subjectId: 1, academicYear: 1 },
+  { unique: true },
 );
 
-export default SCoreREcord;
+const ScoreRecord = mongoose.model<IScoreRecord>(
+  "ScoreRecord",
+  scoreRecordSchema,
+);
+
+export default ScoreRecord;

@@ -17,7 +17,7 @@ export const logActivity = async ({
 }: LogActivityOptions): Promise<void> => {
   try {
     await ActivitiesLogs.create({
-      userId,
+      userId: userId.toString(),
       action,
       details,
       ipAddress: req.ip,
