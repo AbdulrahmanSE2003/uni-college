@@ -8,8 +8,23 @@ import { catchAsync } from "../utils/catchAsync";
 import { deleteOne, updateOne } from "../utils/factory";
 import resHandler from "../utils/resHandler";
 
-// TODO get my assignments
+export const getMyAssignments = catchAsync(async (req, res, next) => {
+  const role = req.user.role;
 
+  if (role === "student") {
+    const student = await Student.findOne({ userId: req.user._id });
+    if (!student) return next(new AppError("Student not found.", 404));
+    const assignments = await Assignment.find({ gradeId: student.gradeId });
+    return resHandler(res, 200, "assignments", assignments);
+  }
+
+  if (role === "teacher") {
+    const teacher = await Teacher.findOne({ userId: req.user._id });
+    if (!teacher) return next(new AppError("Teacher not found.", 404));
+    const assignments = await Assignment.find({ teacherId: teacher._id });
+    return resHandler(res, 200, "assignments", assignments);
+  }
+});
 export const createAssignment = catchAsync(async (req, res, next) => {
   const userId = req.user._id;
   const teacher = await Teacher.findOne({ userId });
@@ -33,8 +48,8 @@ export const createAssignment = catchAsync(async (req, res, next) => {
     );
 
   if (
-    !teacher.grades.includes(gradeId) ||
-    !teacher.subjectIds.includes(subjectId)
+    !teacher.grades.map((id) => id.toString()).includes(gradeId) ||
+    !teacher.subjectIds.map((id) => id.toString()).includes(subjectId)
   )
     return next(new AppError("Invalid operation, not authorized action.", 400));
 
@@ -53,9 +68,8 @@ export const createAssignment = catchAsync(async (req, res, next) => {
 export const submitAssignment = catchAsync(async (req, res, next) => {
   const assignmentId = req.params.id;
   if (!assignmentId)
-    return new AppError(
-      "Invalid operation, please provide assignment id.",
-      400,
+    return next(
+      new AppError("Invalid operation, please provide assignment id.", 400),
     );
 
   if (!(await Assignment.findOne({ _id: assignmentId })))
@@ -77,13 +91,12 @@ export const submitAssignment = catchAsync(async (req, res, next) => {
   const { fileUrl, gradeId } = req.body;
 
   if (!fileUrl || !gradeId)
-    return new AppError(
-      "Invalid operation, please provide needed fields.",
-      400,
+    return next(
+      new AppError("Invalid operation, please provide needed fields.", 400),
     );
 
   if (student.gradeId.toString() !== gradeId)
-    return new AppError("Invalid operation, not authorized action.", 400);
+    return next(new AppError("Invalid operation, not authorized action.", 400));
 
   await AssignmentSubmission.create({
     studentId: student._id.toString(),
@@ -100,6 +113,9 @@ export const submitAssignment = catchAsync(async (req, res, next) => {
 });
 
 export const gradeAssignment = catchAsync(async (req, res, next) => {
+  const teacher = await Teacher.findOne({ userId: req.user._id });
+  if (!teacher) return next(new AppError("Teacher not found.", 404));
+
   const assignmentId = req.params.id;
   if (!assignmentId)
     return new AppError(
@@ -117,7 +133,7 @@ export const gradeAssignment = catchAsync(async (req, res, next) => {
     {
       assignmentId,
     },
-    { feedback, score },
+    { feedback, score, status: "graded" },
     { returnDocument: "after" },
   );
 
