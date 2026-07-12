@@ -56,6 +56,7 @@ app.use("/api/v1/exams", examRoutes);
 app.use("/api/v1/submissions", submissionRoutes);
 app.use("/api/v1/assignments", assignmentRoutes);
 app.use("/api/v1/score-records", scoreRecordRoutes);
+app.use("/api/v1/audit-logs", scoreRecordRoutes);
 app.use("/api/v1/admin", adminRoutes);
 
 app.use(
