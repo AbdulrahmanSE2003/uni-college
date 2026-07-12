@@ -14,8 +14,6 @@ interface EmailOptions {
   name: string;
 }
 
-console.log(process.env.EMAIL_HOST);
-
 const getTransporter = () =>
   nodemailer.createTransport({
     host: process.env.EMAIL_HOST,

@@ -15,6 +15,7 @@ import adminRoutes from "./routes/adminRoutes";
 import subjectRoutes from "./routes/subjectRoutes";
 import examRoutes from "./routes/examRoutes";
 import submissionRoutes from "./routes/submissionRoute";
+import assignmentRoutes from "./routes/assignmentRoutes";
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.use("/api/v1/grades", gradeRoutes);
 app.use("/api/v1/subjects", subjectRoutes);
 app.use("/api/v1/exams", examRoutes);
 app.use("/api/v1/submissions", submissionRoutes);
+app.use("/api/v1/assignments", assignmentRoutes);
 app.use("/api/v1/admin", adminRoutes);
 
 app.use(
