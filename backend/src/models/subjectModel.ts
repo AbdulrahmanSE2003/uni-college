@@ -44,6 +44,7 @@ subjectSchema.post("save", async function () {
   await Teacher.findOneAndUpdate(
     { userId: this.teacherId },
     { $addToSet: { subjectIds: this._id } },
+    { returnDocument: "after" },
   );
 });
 
@@ -61,6 +62,7 @@ subjectSchema.pre("findOneAndDelete", async function () {
   await Teacher.findOneAndUpdate(
     { userId: subject.teacherId },
     { $pull: { subjectIds: subject._id } },
+    { returnDocument: "after" },
   );
 });
 
