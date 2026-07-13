@@ -57,6 +57,17 @@ export const login = catchAsync(
   },
 );
 
+export const checkFirstLogin = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (req.user.isFirstLogin) {
+      return next(
+        new AppError("Please change your password before continuing.", 403),
+      );
+    }
+    next();
+  },
+);
+
 export const protect = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     let token: string | undefined;
