@@ -18,6 +18,7 @@ import submissionRoutes from "./routes/submissionRoute";
 import assignmentRoutes from "./routes/assignmentRoutes";
 import scoreRecordRoutes from "./routes/scoreRecordRoutes";
 import timetableRoutes from "./routes/timetableRoutes";
+import reportCardRoutes from "./routes/reportCardRoutes";
 
 const app = express();
 
@@ -59,6 +60,7 @@ app.use("/api/v1/assignments", assignmentRoutes);
 app.use("/api/v1/score-records", scoreRecordRoutes);
 app.use("/api/v1/audit-logs", scoreRecordRoutes);
 app.use("/api/v1/timetables", timetableRoutes);
+app.use("/api/v1/report-card", reportCardRoutes);
 app.use("/api/v1/admin", adminRoutes);
 
 app.use(

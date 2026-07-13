@@ -18,7 +18,7 @@ export interface ISubmission extends Document {
   studentId: Types.ObjectId;
   answers: Answer[];
   result: Result;
-  status: "submitted" | "scored";
+  status: "submitted" | "graded";
   submittedAt: Date;
 }
 
@@ -38,7 +38,7 @@ const submissionSchema = new Schema<ISubmission>({
     percentage: { type: Number },
     gradedAt: { type: Date, default: Date.now },
   },
-  status: { type: String, enum: ["submitted", "scored"], default: "submitted" },
+  status: { type: String, enum: ["submitted", "graded"], default: "submitted" },
   submittedAt: { type: Date, default: Date.now },
 });
 

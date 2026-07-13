@@ -35,7 +35,7 @@ export const gradeExamFunction = inngest.createFunction(
       await Submission.findByIdAndUpdate(submissionId, {
         answers: gradedAnswers,
         result: { score, totalMarks, percentage, gradedAt: new Date() },
-        status: "scored",
+        status: "graded",
       });
 
       return { score, totalMarks, percentage };
@@ -46,7 +46,7 @@ export const gradeExamFunction = inngest.createFunction(
       const submission = await Submission.findById(submissionId);
       const allSubmissions = await Submission.find({
         studentId: submission?.studentId,
-        status: "scored",
+        status: "graded",
       });
 
       const avg =
