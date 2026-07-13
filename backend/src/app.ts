@@ -39,14 +39,30 @@ const limiter = rateLimit({
 });
 app.use("/api/", limiter);
 
+// app.use(
+//   cors({
+//     origin: true,
+//     credentials: true,
+//   }),
+// );
+
 // ─── Standard Middleware ──────────────────────────────────────────────────────
 app.use(express.json({ limit: "10kb" })); // Body parser with payload limit protection
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(cookieParser());
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
     credentials: true,
+    origin(origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (origin === process.env.CLIENT_URL) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
   }),
 );
 

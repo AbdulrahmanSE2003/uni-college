@@ -2,10 +2,17 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Figtree, Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { QueryClient } from "@tanstack/react-query";
+import QueryProvider from "@/providers/query-provider";
+import { Toaster } from "@/components/ui/sonner";
 
-const figtreeHeading = Figtree({subsets:['latin'],variable:'--font-heading'});
+const figtreeHeading = Figtree({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
 
-const notoSans = Noto_Sans({subsets:['latin'],variable:'--font-sans'});
+const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +37,23 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", notoSans.variable, figtreeHeading.variable)}
+      className={cn(
+        "h-full",
+        "antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        "font-sans",
+        notoSans.variable,
+        figtreeHeading.variable,
+      )}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <QueryProvider>
+          <Toaster position="top-right" />
+          <main>{children}</main>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryProvider>
+      </body>
     </html>
   );
 }
