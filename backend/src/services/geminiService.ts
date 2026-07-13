@@ -70,29 +70,40 @@ export const generateTimetable = async ({
   days,
 }: GenerateTimetableParams): Promise<TimetableSlot[]> => {
   const prompt = `
-    Generate a collision-free weekly timetable for ${gradeName}.
-    School days: ${days.join(", ")}
-    School hours: ${startTime} to ${endTime}
-    Periods per day: ${periodsPerDay}
+    You are an expert school scheduling algorithm. 
+    Generate a strictly formatted, collision-free weekly timetable for ${gradeName}.
     
-    Available subjects and their teachers:
-    ${subjects.map((s) => `- ${s.name} (taught by ${s.teacherName})`).join("\n")}
+    ### INPUT PARAMETERS
+    - School days: ${days.join(", ")}
+    - School hours: ${startTime} to ${endTime} (24-hour format)
+    - Periods per day: ${periodsPerDay}
+    - Total periods in week: ${days.length * periodsPerDay}
     
-    Rules:
-    - No teacher should appear twice in the same time slot
-    - Distribute subjects evenly across the week
-    - Each period should be equal duration
+    Available subjects and teachers:
+    ${subjects.length > 0 ? subjects.map((s) => `- ${s.name} (taught by ${s.teacherName})`).join("\n") : "None"}
     
-    Return ONLY a valid JSON array with no markdown, no backticks, no explanation.
-    Each object must have exactly these fields:
-    - "day": string
-    - "subjectName": string
-    - "teacherName": string  
-    - "startTime": string (HH:MM format)
-    - "endTime": string (HH:MM format)
+    ### STRICT SCHEDULING RULES
+    1. EXACTLY ONCE PER WEEK: Every provided subject MUST be scheduled exactly one time in the entire week. Do not repeat any subject.
+    2. FREE SLOTS: The total number of periods in the week (${days.length * periodsPerDay}) is greater than the number of available subjects (${subjects.length}). You MUST fill all remaining empty periods with "Free Slot".
+    3. TIME MATH: Calculate the exact duration of each period by dividing the total daily time by the number of periods. Output the exact "startTime" and "endTime" for every period sequentially.
+    4. SEQUENTIAL ORDER: Every day must have exactly ${periodsPerDay} periods scheduled back-to-back without any time gaps.
+    
+    ### OUTPUT FORMAT
+    Return ONLY a valid JSON array of objects. NO markdown formatting, NO \`\`\`json blocks, NO explanations.
+    Each object must represent a single period and strictly follow this schema:
+    {
+      "day": string (Must exactly match one of the provided school days),
+      "subjectName": string (The subject name OR "Free Slot"),
+      "teacherName": string | null (The teacher's name OR null if it is a "Free Slot"),
+      "startTime": string (HH:MM format),
+      "endTime": string (HH:MM format)
+    }
     
     Example format:
-    [{"day":"SAT","subjectName":"Math","teacherName":"Mr. Ahmed","startTime":"08:00","endTime":"09:00"}]
+    [
+      {"day":"SAT","subjectName":"SW Engineering","teacherName":"Dr. Sarah","startTime":"09:00","endTime":"11:00"},
+      {"day":"SAT","subjectName":"Free Slot","teacherName":null,"startTime":"11:00","endTime":"13:00"}
+    ]
   `;
 
   const result = await getGeminiModel().generateContent(prompt);

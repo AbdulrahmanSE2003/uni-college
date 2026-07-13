@@ -18,7 +18,11 @@ export interface ISubject extends Document {
 const subjectSchema: Schema<ISubject> = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    teacherId: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
+    teacherId: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Teacher",
+      required: true,
+    },
     gradeId: { type: mongoose.Schema.ObjectId, ref: "Grade", required: true },
     materials: [
       {

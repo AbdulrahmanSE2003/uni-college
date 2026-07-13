@@ -5,8 +5,8 @@ interface TimeSlot {
   teacherId: Types.ObjectId;
   subjectId: Types.ObjectId;
   day: "SAT" | "SUN" | "MON" | "TUE" | "WED" | "THU";
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   location: string;
 }
 
@@ -23,21 +23,19 @@ const timetableSchema = new Schema<ITimetable>({
       teacherId: {
         type: mongoose.Schema.ObjectId,
         ref: "Teacher",
-        required: true,
       },
       subjectId: {
         type: mongoose.Schema.ObjectId,
         ref: "Subject",
-        required: true,
       },
-      location: { type: String, required: true },
+      location: { type: String, default: "TBD" },
       day: {
         type: String,
         enum: ["SAT", "SUN", "MON", "TUE", "WED", "THU"],
         required: true,
       },
-      startTime: { type: Date, required: true },
-      endTime: { type: Date, required: true },
+      startTime: { type: String, required: true },
+      endTime: { type: String, required: true },
     },
   ],
   generatedBy: { type: mongoose.Schema.ObjectId, ref: "User", required: true },
