@@ -1,11 +1,9 @@
-import ForgotPasswordForm from "@/features/auth/components/forgotPasswordForm";
-
 const page = () => {
   return (
     <section
       className={`bg-brand-secondary text-foreground h-screen flex justify-center items-center`}
     >
-      <ForgotPasswordForm />
+      ss
     </section>
   );
 };

@@ -139,7 +139,7 @@ const LoginForm = () => {
                       )}
                     </Field>
                     <Link
-                      href="#"
+                      href="/forgot-password"
                       className="ml-auto inline-block text-xs underline-offset-2 hover:underline hover:text-primary transition-all duration-300"
                     >
                       Forgot your password?
