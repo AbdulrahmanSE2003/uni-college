@@ -1,9 +1,9 @@
-export interface ResetPasswordPayload {
+export interface changePasswordPayload {
   password: string;
   passwordConfirm: string;
 }
 
-export interface ResetPasswordResponse {
+export interface ChangePasswordResponse {
   status: boolean;
   message: string;
 }

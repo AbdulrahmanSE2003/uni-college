@@ -132,25 +132,30 @@ export const forgotPassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return next(new AppError("There is no such user with this email.", 404));
+      return res.status(200).json({
+        status: true,
+        message:
+          "If an account with that email exists, a password reset link has been sent.",
+      });
     }
 
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
 
-    const resetURL = `${process.env.CLIENT_URL}/users/reset-password/${resetToken}`;
+    const resetURL = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
     try {
       await sendEmail({
         email: user.email,
         name: user.name,
-        subject: "Your password reset token (valid for 10 min)",
+        subject: "Reset your Uni-College password",
         resetURL,
       });
 
       res.status(200).json({
         status: true,
-        message: "Token was sent to email!",
+        message:
+          "If an account with that email exists, a password reset link has been sent.",
       });
     } catch (e) {
       user.passwordResetToken = undefined;

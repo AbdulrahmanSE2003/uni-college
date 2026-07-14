@@ -39,7 +39,9 @@ export default function ForgotPasswordForm() {
   const onSubmit = (data: ForgotPasswordFormData) => {
     forgotPasswordMutation.mutate(data, {
       onSuccess: () => {
-        toast.success(`Reset password email was sent to `);
+        toast.success(
+          "If an account with that email exists, a password reset link has been sent.",
+        );
       },
       onError: (error) => {
         toast.error(getErrorMessage(error));

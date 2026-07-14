@@ -20,51 +20,49 @@ import {
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/get-error-message";
-import { changePasswordSchema } from "../schemas/changePassword.schema";
-import { changePasswordPayload } from "../types/changePassword.types";
-import { useChangePassword } from "../hooks/use-ChangePassword";
+import { ResetPasswordPayload } from "../types/changePassword.types";
+import { resetPasswordSchema } from "../schemas/resetPassword.schema";
+import { useResetPassword } from "../hooks/use-ResetPassword";
 
 const passwordFields = [
-  {
-    name: "oldPassword" as const,
-    label: "Current Password",
-  },
   {
     name: "password" as const,
     label: "New Password",
   },
   {
     name: "passwordConfirm" as const,
-    label: " New Password Confirm",
+    label: "New Password Confirm",
   },
 ];
 
-const ChangePasswordForm = () => {
+const ResetPasswordForm = ({ token }: { token: string }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const { handleSubmit, reset, control } = useForm({
-    resolver: zodResolver(changePasswordSchema),
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      oldPassword: "",
       password: "",
       passwordConfirm: "",
     },
   });
 
-  const changePasswordMutation = useChangePassword();
+  const resetPasswordMutation = useResetPassword();
   const router = useRouter();
 
-  const onSubmit = (data: changePasswordPayload) => {
-    changePasswordMutation.mutate(data, {
-      onSuccess: () => {
-        reset();
-        toast.success("Password changed successfully.");
-        router.push("/dashboard");
+  const onSubmit = (data: ResetPasswordPayload) => {
+    resetPasswordMutation.mutate(
+      { token, data },
+      {
+        onSuccess: () => {
+          reset();
+          toast.success("Password changed successfully.");
+          router.push("/login");
+        },
+        onError: (error) => {
+          toast.error(getErrorMessage(error));
+        },
       },
-      onError: (error) => {
-        toast.error(getErrorMessage(error));
-      },
-    });
+    );
   };
 
   return (
@@ -72,10 +70,10 @@ const ChangePasswordForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className={`space-y-6`}>
         <CardContent>
           <FieldSet>
-            <FieldLegend>Change your password</FieldLegend>
-            <FieldDescription className={`mb-4`}>
-              {" "}
-              Your first login!, change your pre made password for security
+            <FieldLegend>Reset your password</FieldLegend>
+
+            <FieldDescription className="mb-4">
+              Enter your new password below to regain access to your account.
             </FieldDescription>
 
             <FieldGroup className={`gap-y-4`}>
@@ -127,11 +125,11 @@ const ChangePasswordForm = () => {
         </CardContent>
         <CardFooter className="flex-col gap-2">
           <Button
-            disabled={changePasswordMutation.isPending}
+            disabled={resetPasswordMutation.isPending}
             type="submit"
             className="w-full py-5 text-md"
           >
-            {changePasswordMutation.isPending ? "Submitting..." : "Submit"}
+            {resetPasswordMutation.isPending ? "Submitting..." : "Submit"}
           </Button>
         </CardFooter>
       </form>
@@ -139,4 +137,4 @@ const ChangePasswordForm = () => {
   );
 };
 
-export default ChangePasswordForm;
+export default ResetPasswordForm;
