@@ -1,0 +1,41 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+const AppHeader = () => {
+  const pathname = usePathname();
+  const [formattedTime, setFormattedTime] = useState("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const timeString = now.toLocaleDateString("en-US", {
+        weekday: "long",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+      setFormattedTime(timeString);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="h-12 border-b border-border shadow-xs w-full bg-sidebar p-2 px-4 flex justify-between items-center">
+      <div className="capitalize text-primary font-semibold text-xl tracking-wide">
+        {pathname.slice(1)}
+      </div>
+
+      <div className="text-sm text-muted-foreground font-medium">
+        {formattedTime}
+      </div>
+    </div>
+  );
+};
+
+export default AppHeader;
