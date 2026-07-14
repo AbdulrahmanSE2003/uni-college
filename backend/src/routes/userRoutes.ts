@@ -7,6 +7,7 @@ import {
   protect,
   resetPassword,
 } from "../controllers/authController";
+import { changePassword } from "../controllers/userController";
 
 const userRoutes = express.Router();
 
@@ -17,7 +18,7 @@ userRoutes.patch("/reset-password/:resetToken", resetPassword);
 
 userRoutes.use(protect);
 
-// TODO here will goes change password route
+userRoutes.route("/change-password").patch(changePassword);
 
 userRoutes.use(checkFirstLogin); // ← blocks everything below if first login
 

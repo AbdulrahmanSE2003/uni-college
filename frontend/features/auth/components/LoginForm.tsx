@@ -6,16 +6,8 @@ import { Controller, useForm } from "react-hook-form";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { LoginSchema, loginSchema } from "../schemas/login.schema";
 import { useState } from "react";
 import {
@@ -52,10 +44,12 @@ const LoginForm = () => {
       onSuccess: (data) => {
         setUser(data.auth.user);
 
+        reset();
         if (data.auth.user.isFirstLogin) {
           router.push("/change-password");
           return;
         }
+        toast.success("Welcome back!");
 
         router.push("/dashboard");
       },
