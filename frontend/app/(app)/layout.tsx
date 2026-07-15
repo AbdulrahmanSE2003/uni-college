@@ -9,7 +9,7 @@ const layout = ({ children }: { children: ReactNode }) => {
       <AppSidebar />
       <main className={`flex flex-col w-full min-h-screen`}>
         <AppHeader />
-        <section className={`h-full p-3`}>{children}</section>
+        <section className={`h-full p-4`}>{children}</section>
       </main>
     </SidebarProvider>
   );

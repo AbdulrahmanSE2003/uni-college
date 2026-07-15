@@ -6,7 +6,6 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import NavLinks from "./NavLinks";
 import SidebarFooterActions from "./SidebarFooterActions";
@@ -20,7 +19,6 @@ export function AppSidebar() {
         <span className={`font-semibold text-lg`}>
           <span className={`text-primary`}>Uni</span>-College 🎓
         </span>
-        <SidebarTrigger />
       </SidebarHeader>
       <SidebarContent className={`px-3`}>
         <SidebarGroup />

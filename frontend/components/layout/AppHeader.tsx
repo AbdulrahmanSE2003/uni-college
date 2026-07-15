@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { SidebarTrigger } from "../ui/sidebar";
 
 const AppHeader = () => {
   const pathname = usePathname();
@@ -27,8 +28,11 @@ const AppHeader = () => {
 
   return (
     <div className="h-12 border-b border-border shadow-xs w-full bg-sidebar p-2 px-4 flex justify-between items-center">
-      <div className="capitalize text-primary font-semibold text-xl tracking-wide">
-        {pathname.slice(1)}
+      <div className={`flex items-center gap-x-3`}>
+        <SidebarTrigger />
+        <div className="capitalize text-primary font-semibold text-xl tracking-wide">
+          {pathname.slice(1)}
+        </div>
       </div>
 
       <div className="text-sm text-muted-foreground font-medium">

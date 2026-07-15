@@ -7,7 +7,7 @@ import {
   protect,
   resetPassword,
 } from "../controllers/authController";
-import { changePassword } from "../controllers/userController";
+import { changePassword, getMe } from "../controllers/userController";
 
 const userRoutes = express.Router();
 
@@ -23,5 +23,6 @@ userRoutes.route("/change-password").patch(changePassword);
 userRoutes.use(checkFirstLogin); // ← blocks everything below if first login
 
 // TODO here goes future routes
+userRoutes.route("/me").get(getMe);
 
 export default userRoutes;

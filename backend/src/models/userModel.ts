@@ -14,6 +14,8 @@ export interface IUser extends Document {
   email: string;
   password: string;
   passwordConfirm: string;
+  phone: string;
+  gender: "Male" | "Female" | "N/A";
   isActive: boolean;
   role: "admin" | "teacher" | "student";
   isFirstLogin: boolean;
@@ -61,6 +63,9 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
         message: "Passwords are not the same!",
       },
     },
+
+    phone: { type: String, default: "N/A" },
+    gender: { type: String, enum: ["Male", "Female", "N/A"], default: "N/A" },
 
     role: {
       type: String,
