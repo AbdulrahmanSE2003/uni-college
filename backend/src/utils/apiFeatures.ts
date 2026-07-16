@@ -21,6 +21,14 @@ class APIFeatures<T extends Query<any, any>> {
   filter() {
     const queryObj = { ...this.queryString };
 
+    if (queryObj.role === "all") delete queryObj.role;
+    if (queryObj.status === "all") delete queryObj.status;
+
+    if (queryObj.status === "active") queryObj.isActive = true;
+    if (queryObj.status === "inActive") queryObj.isActive = false;
+
+    delete queryObj.status;
+
     const excludedFields = ["page", "sort", "limit", "fields", "search"];
 
     excludedFields.forEach((el) => delete queryObj[el]);

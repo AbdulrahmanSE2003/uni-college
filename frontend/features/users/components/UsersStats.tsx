@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Shield, GraduationCap, UserSquare } from "lucide-react";
 import StatCard from "./StatCard";
+import { Stats } from "../types/users.types";
 
 interface User {
   _id: string;
@@ -15,29 +16,18 @@ interface User {
 }
 
 interface UsersStatsProps {
-  users: User[];
+  stats: Stats;
+  total: number;
 }
 
-export const UsersStats = ({ users }: UsersStatsProps) => {
-  const stats = useMemo(() => {
-    return {
-      total: users.length,
-      admins: users.filter((u) => u.role === "admin").length,
-      teachers: users.filter((u) => u.role === "teacher").length,
-      students: users.filter(
-        (u) =>
-          u.role === "student" ||
-          (!u.role && u.role !== "admin" && u.role !== "teacher"),
-      ).length,
-    };
-  }, [users]);
+export const UsersStats = ({ stats, total }: UsersStatsProps) => {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <StatCard
         Icon={Users}
         iconClass="text-blue-500"
         title="Total Accounts"
-        value={stats.total}
+        value={total}
         note=""
       />
       <StatCard

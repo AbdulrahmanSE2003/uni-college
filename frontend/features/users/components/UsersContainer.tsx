@@ -9,14 +9,24 @@ import { Skeleton } from "@/components/ui/skeleton";
 import UsersStats from "./UsersStats";
 import PageHeader from "@/components/shared/PageHeader";
 import UsersTable from "./UsersTable";
+import PaginationComp from "@/components/shared/Pagination";
+import TableActions from "./TableActions";
+import { roleOptions, statusOptions } from "@/lib/constants";
 
 const UsersContainer = () => {
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+
+  const [role, setRole] = useState(roleOptions[0].value);
+  const [status, setStatus] = useState(statusOptions[0].value);
   const [debouncedSearch] = useDebounce(search, 500);
 
   const { data, error, isPending } = useUsers({
     search: debouncedSearch,
-    page: 1,
+    page,
+    role,
+    status,
+
     limit: 10,
   });
   const users = useMemo(() => data?.users || [], [data]);
@@ -44,9 +54,21 @@ const UsersContainer = () => {
       />
 
       {/* 2. Statistical Metrics Cards */}
-      <UsersStats users={users} />
+      <UsersStats stats={data.stats} total={data.total} />
+      <div className={`flex flex-col gap-y-3 items-end`}>
+        {/* 3. Utilities */}
+        <TableActions
+          search={search}
+          setSearch={setSearch}
+          role={role}
+          setRole={setRole}
+          status={status}
+          setStatus={setStatus}
+        />
+        <UsersTable users={users} />
+      </div>
 
-      <UsersTable users={users} search={search} setSearch={setSearch} />
+      <PaginationComp page={page} setPage={setPage} totalPages={data.pages} />
     </div>
   );
 };

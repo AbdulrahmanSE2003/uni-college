@@ -1,6 +1,7 @@
 import Student from "../models/studentModel";
 import Teacher from "../models/teacherModel";
 import User from "../models/userModel";
+import APIFeatures from "../utils/apiFeatures";
 import { AppError } from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
 import { getAll, getOne } from "../utils/factory";
@@ -69,4 +70,72 @@ export const getMe = catchAsync(async (req, res, next) => {
   }
 });
 
-export const getAllUsers = getAll(User);
+export const getAllUsers = catchAsync(async (req, res, next) => {
+  // Statistics
+  const [stats] = await User.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalUsers: { $sum: 1 },
+
+        admins: {
+          $sum: {
+            $cond: [{ $eq: ["$role", "admin"] }, 1, 0],
+          },
+        },
+
+        teachers: {
+          $sum: {
+            $cond: [{ $eq: ["$role", "teacher"] }, 1, 0],
+          },
+        },
+
+        students: {
+          $sum: {
+            $cond: [{ $eq: ["$role", "student"] }, 1, 0],
+          },
+        },
+
+        active: {
+          $sum: {
+            $cond: ["$isActive", 1, 0],
+          },
+        },
+
+        inactive: {
+          $sum: {
+            $cond: ["$isActive", 0, 1],
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+      },
+    },
+  ]);
+
+  // Paginated users
+  const features = new APIFeatures(User.find(), req.query)
+    .filter()
+    .search()
+    .sort()
+    .limitFields()
+    .paginate();
+
+  const users = await features.query;
+
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+
+  res.status(200).json({
+    status: true,
+    results: users.length,
+    total: stats.totalUsers,
+    page,
+    pages: Math.ceil(stats.totalUsers / limit),
+    stats,
+    users,
+  });
+});

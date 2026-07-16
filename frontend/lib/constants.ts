@@ -134,3 +134,15 @@ export const NAV_LINKS: SidebarLinks[] = [
     category: "system",
   },
 ];
+
+export const roleOptions = [
+  { label: "All", value: "all" },
+  { label: "Admin", value: "admin" },
+  { label: "Teacher", value: "teacher" },
+  { label: "Student", value: "student" },
+];
+export const statusOptions = [
+  { label: "All", value: "all" },
+  { label: "Active", value: "active" },
+  { label: "Inactive", value: "inActive" },
+];

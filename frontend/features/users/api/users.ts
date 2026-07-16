@@ -1,11 +1,8 @@
 import api from "@/lib/axios";
 import { UsersResponse } from "../types/users.types";
+import { UsersParams } from "../hooks/use-users";
 
-export const getUsers = async (params?: {
-  search?: string;
-  page?: number;
-  limit?: number;
-}) => {
+export const getUsers = async (params?: UsersParams) => {
   const response = await api.get<UsersResponse>("/users", {
     params,
   });
