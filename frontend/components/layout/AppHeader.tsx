@@ -31,7 +31,7 @@ const AppHeader = () => {
       <div className={`flex items-center gap-x-3`}>
         <SidebarTrigger />
         <div className="capitalize text-primary font-semibold text-xl tracking-wide">
-          {pathname.slice(1)}
+          {pathname.slice(1).split("/").at(0)}
         </div>
       </div>
 

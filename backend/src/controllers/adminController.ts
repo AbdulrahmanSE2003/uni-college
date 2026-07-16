@@ -10,11 +10,14 @@ import { sendWelcomeEmail } from "../utils/sendEmail";
 import Teacher from "../models/teacherModel";
 
 export const createStudent = catchAsync(async (req, res, next) => {
-  const { name, email, gradeId } = req.body;
+  const { name, email, gradeId, phone, gender } = req.body;
 
   if (!name || !email || !gradeId)
     return next(
-      new AppError("Invalid operation, please provide needed data", 400),
+      new AppError(
+        "Invalid operation, please provide name, email, gradeId.",
+        400,
+      ),
     );
 
   const tempPassword = "Uni@12345"; // Will be changed on first login
@@ -31,6 +34,8 @@ export const createStudent = catchAsync(async (req, res, next) => {
           password: tempPassword,
           passwordConfirm: tempPassword,
           role: "student",
+          phone,
+          gender,
         },
       ],
       { session },
@@ -57,7 +62,8 @@ export const createStudent = catchAsync(async (req, res, next) => {
     );
     const student = students[0];
 
-    await sendWelcomeEmail({ email, name, role: "student", tempPassword });
+    // TODO
+    // await sendWelcomeEmail({ email, name, role: "student", tempPassword });
 
     await session.commitTransaction();
     resHandler(res, 201, "student", { user, student });
@@ -70,7 +76,7 @@ export const createStudent = catchAsync(async (req, res, next) => {
 });
 
 export const createTeacher = catchAsync(async (req, res, next) => {
-  const { name, email, grades, subjects } = req.body;
+  const { name, email, grades, subjects, phone, gender } = req.body;
 
   if (!name || !email || !grades || !subjects)
     return next(
@@ -91,6 +97,8 @@ export const createTeacher = catchAsync(async (req, res, next) => {
           password: tempPassword,
           passwordConfirm: tempPassword,
           role: "teacher",
+          phone,
+          gender,
         },
       ],
       { session },
@@ -109,7 +117,7 @@ export const createTeacher = catchAsync(async (req, res, next) => {
     );
     const teacher = teachers[0];
 
-    await sendWelcomeEmail({ name, email, role: "teacher", tempPassword });
+    // await sendWelcomeEmail({ name, email, role: "teacher", tempPassword });
 
     await session.commitTransaction();
     resHandler(res, 201, "teacher", { user, teacher });

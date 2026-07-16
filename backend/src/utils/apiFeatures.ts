@@ -1,4 +1,4 @@
-import { Query } from "mongoose";
+import { Query, QueryWithHelpers } from "mongoose";
 
 interface QueryString {
   page?: string;
@@ -13,20 +13,15 @@ interface QueryString {
 }
 
 class APIFeatures<T extends Query<any, any>> {
-  public query: T;
-
-  public queryString: QueryString;
-
-  constructor(query: T, queryString: QueryString) {
-    this.query = query;
-
-    this.queryString = queryString;
-  }
+  constructor(
+    public query: QueryWithHelpers<any[], any>,
+    public queryString: QueryString,
+  ) {}
 
   filter() {
     const queryObj = { ...this.queryString };
 
-    const excludedFields = ["page", "sort", "limit", "fields"];
+    const excludedFields = ["page", "sort", "limit", "fields", "search"];
 
     excludedFields.forEach((el) => delete queryObj[el]);
 
@@ -72,6 +67,21 @@ class APIFeatures<T extends Query<any, any>> {
 
     this.query = this.query.skip(skip).limit(limit);
 
+    return this;
+  }
+
+  search() {
+    if (this.queryString.search) {
+      const searchRegex = new RegExp(this.queryString.search as string, "i");
+      this.query = this.query.find({
+        $or: [
+          { name: searchRegex },
+          { email: searchRegex },
+          { title: searchRegex },
+          { action: searchRegex },
+        ],
+      } as any);
+    }
     return this;
   }
 }

@@ -1,5 +1,10 @@
+import SubjectContainer from "@/features/subjects/components/SubjectContainer";
 const page = () => {
-  return <div>page</div>;
+  return (
+    <section>
+      <SubjectContainer />
+    </section>
+  );
 };
 
 export default page;

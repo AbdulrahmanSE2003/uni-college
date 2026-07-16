@@ -3,7 +3,7 @@ import Teacher from "../models/teacherModel";
 import User from "../models/userModel";
 import { AppError } from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
-import { getOne } from "../utils/factory";
+import { getAll, getOne } from "../utils/factory";
 import resHandler from "../utils/resHandler";
 
 export const changePassword = catchAsync(async (req, res, next) => {
@@ -68,3 +68,5 @@ export const getMe = catchAsync(async (req, res, next) => {
     resHandler(res, 200, "user", { ...req.user.toObject() });
   }
 });
+
+export const getAllUsers = getAll(User);

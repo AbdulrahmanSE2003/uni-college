@@ -23,7 +23,7 @@ export const getAll = <T>(
       .sort()
 
       .limitFields()
-
+      .search()
       .paginate();
 
     let query = features.query;

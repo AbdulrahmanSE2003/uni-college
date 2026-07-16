@@ -6,7 +6,20 @@ import { catchAsync } from "../utils/catchAsync";
 import { deleteOne, getAll, getOne, updateOne } from "../utils/factory";
 import resHandler from "../utils/resHandler";
 
-export const getAllSubjects = getAll(Subject);
+export const getAllSubjects = getAll(Subject, [
+  {
+    path: "gradeId",
+    select: "name",
+  },
+  {
+    path: "teacherId",
+    select: "userId",
+    populate: {
+      path: "userId",
+      select: "name",
+    },
+  },
+]);
 
 export const getSubject = getOne(Subject);
 
@@ -18,7 +31,16 @@ export const getMySubjects = catchAsync(async (req, res, next) => {
     if (!studentProfile)
       return next(new AppError("Invalid operation, no such a student.", 404));
 
-    const subjects = await Subject.find({ gradeId: studentProfile.gradeId });
+    const subjects = await Subject.find({
+      gradeId: studentProfile.gradeId,
+    }).populate({
+      path: "teacherId",
+      select: "teacherId",
+      populate: {
+        path: "userId",
+        select: "name",
+      },
+    });
 
     if (!subjects.length)
       return next(
@@ -32,7 +54,13 @@ export const getMySubjects = catchAsync(async (req, res, next) => {
   } else if (role === "teacher") {
     const teacherProfile = await Teacher.findOne({
       userId: req.user._id,
-    }).populate("subjectIds");
+    }).populate({
+      path: "subjectIds",
+      populate: {
+        path: "gradeId",
+        select: "name",
+      },
+    });
     if (!teacherProfile)
       return next(new AppError("Invalid operation, no such a teacher.", 404));
 

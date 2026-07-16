@@ -14,7 +14,6 @@ const ProfileContainer = () => {
   if (isPending) return <ProfileSkeleton />;
 
   if (!data) return <NotFound />;
-  console.log(data);
 
   const userData = data.user;
 

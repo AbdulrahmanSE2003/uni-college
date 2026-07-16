@@ -6,8 +6,13 @@ import {
   logout,
   protect,
   resetPassword,
+  restrictTo,
 } from "../controllers/authController";
-import { changePassword, getMe } from "../controllers/userController";
+import {
+  changePassword,
+  getAllUsers,
+  getMe,
+} from "../controllers/userController";
 
 const userRoutes = express.Router();
 
@@ -18,11 +23,11 @@ userRoutes.patch("/reset-password/:resetToken", resetPassword);
 
 userRoutes.use(protect);
 
+userRoutes.route("/").get(restrictTo("admin"), getAllUsers);
 userRoutes.route("/change-password").patch(changePassword);
 
 userRoutes.use(checkFirstLogin); // ← blocks everything below if first login
 
-// TODO here goes future routes
 userRoutes.route("/me").get(getMe);
 
 export default userRoutes;
