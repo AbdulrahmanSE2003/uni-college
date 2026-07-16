@@ -14,8 +14,8 @@ import ActionCell from "@/components/shared/ActionCell";
 
 const UsersTable = ({ users }: { users: User[] }) => {
   return (
-    <div className={`rounded-4xl border border-border w-full`}>
-      <Table className={`rounded-4xl`}>
+    <div className={`rounded-2xl border border-border w-full`}>
+      <Table className={``}>
         <TableHeader className={`bg-muted`}>
           <TableRow>
             <TableHead>Name</TableHead>

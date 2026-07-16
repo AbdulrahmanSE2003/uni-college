@@ -13,7 +13,7 @@ import {
 interface FormDialogProps {
   title: string;
   trigger: ReactElement;
-  children: (close: () => void) => ReactNode;
+  children: ReactNode;
 }
 
 const FormDialog = ({ title, trigger, children }: FormDialogProps) => {
@@ -28,7 +28,7 @@ const FormDialog = ({ title, trigger, children }: FormDialogProps) => {
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
 
-        {children(() => setOpen(false))}
+        {children}
       </DialogContent>
     </Dialog>
   );

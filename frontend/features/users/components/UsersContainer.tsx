@@ -55,7 +55,7 @@ const UsersContainer = () => {
 
       {/* 2. Statistical Metrics Cards */}
       <UsersStats stats={data.stats} total={data.total} />
-      <div className={`flex flex-col gap-y-3 items-end`}>
+      <div className={`flex flex-col gap-y-4 items-end`}>
         {/* 3. Utilities */}
         <TableActions
           search={search}

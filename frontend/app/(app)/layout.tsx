@@ -37,7 +37,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="flex flex-col w-full min-h-screen">
+      <main className="flex flex-col w-full min-h-screen relative ">
         <AppHeader />
         <section className="h-full p-4">{children}</section>
       </main>

@@ -16,13 +16,15 @@ const StatCard = ({
   iconClass?: string;
 }) => {
   return (
-    <Card className="border border-border bg-card/50 backdrop-blur-sm">
+    <Card className="border border-border bg-card/50 backdrop-blur-sm hover:border-primary/75 transition-colors duration-300 group">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-lg font-medium">{title}</CardTitle>
         <Icon className={cn("size-6 text-muted-foreground", iconClass)} />
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
+        <div className="text-2xl font-bold group-hover:text-primary transition-colors duration-300">
+          {value}
+        </div>
         <p className="text-xs text-muted-foreground mt-0.5">
           {note || "Registered in system"}
         </p>

@@ -9,14 +9,20 @@ import {
 
 import NavLinks from "./NavLinks";
 import SidebarFooterActions from "./SidebarFooterActions";
+import { GraduationCap } from "lucide-react";
 
 export function AppSidebar() {
   return (
-    <Sidebar>
-      <SidebarHeader className="h-16 justify-center px-4 border-b">
-        <span className="text-xl font-bold">
-          <span className="text-primary">Uni</span>-College
-        </span>
+    <Sidebar className={` border-r`}>
+      <SidebarHeader className="h-12 justify-center px-4 border-b">
+        <div className="text-xl font-bold flex items-center gap-1.5">
+          <div className={`bg-primary rounded-xl p-1`}>
+            <GraduationCap className={`stroke-white `} />
+          </div>
+          <span className="text-primary">
+            Uni<span className={`text-foreground`}>-College</span>
+          </span>
+        </div>
       </SidebarHeader>
 
       <SidebarContent className="p-2">

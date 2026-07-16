@@ -11,6 +11,7 @@ import {
 
 import { NAV_LINKS } from "@/lib/constants";
 import { useAuthStore } from "@/store/authStore";
+import { cn } from "@/lib/utils";
 
 const NavLinks = () => {
   const pathname = usePathname();
@@ -21,26 +22,25 @@ const NavLinks = () => {
   );
 
   return (
-    <SidebarMenu className={`gap-y-2`}>
+    <SidebarMenu className={`gap-y-1`}>
       {links.map((link) => {
         const isActive =
           pathname === link.href || pathname.startsWith(`${link.href}/`);
         return (
-          <SidebarMenuItem key={link.href}>
-            <SidebarMenuButton
-              className={`cursor-pointer hover:bg-primary/10 ${isActive ? "bg-primary/15" : ""}`}
-              isActive={isActive}
+          <SidebarMenuItem
+            key={link.href}
+            className={`text-foreground/75 hover:text-foreground text-sm`}
+          >
+            <Link
+              href={link.href}
+              className={cn(
+                `flex items-center gap-3 cursor-pointer rounded-xl group hover:bg-primary/10 p-1.5 transition-colors duration-300`,
+                isActive ? "bg-primary/15 text-primary" : "",
+              )}
             >
-              <Link
-                href={link.href}
-                className={`flex items-center gap-3 cursor-pointer `}
-              >
-                <link.icon className="size-4" />
-                <span className="capitalize">
-                  {link.label.replace("-", " ")}
-                </span>
-              </Link>
-            </SidebarMenuButton>
+              <link.icon className="size-4 group-hover:stroke-primary transition-colors duration-300" />
+              <span className="capitalize">{link.label.replace("-", " ")}</span>
+            </Link>
           </SidebarMenuItem>
         );
       })}
