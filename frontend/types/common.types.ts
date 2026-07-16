@@ -6,3 +6,8 @@ export interface ApiResponse<T> {
   results?: number;
   data: T;
 }
+
+export interface DeleteResponse {
+  status: boolean;
+  message: string;
+}

@@ -2,17 +2,16 @@
 
 import { ReactNode, useEffect } from "react";
 import AppHeader from "@/components/layout/AppHeader";
-import { AppSidebar } from "@/components/layout/AppSidebar";
+import { AppSidebar } from "@/components/layout/sidebar/AppSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useGetMe } from "@/features/profile/hooks/use-GetMe";
 import { useAuthStore } from "@/store/authStore";
 import { Loader2 } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { data, isPending, error } = useGetMe();
-  const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {

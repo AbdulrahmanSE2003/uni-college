@@ -1,11 +1,19 @@
-import TableView from "@/components/shared/TableView";
+import { Skeleton } from "@/components/ui/skeleton";
 import UsersContainer from "@/features/users/components/UsersContainer";
+import { Suspense } from "react";
 
 const page = () => {
   return (
-    <div className={``}>
+    <Suspense
+      fallback={
+        <div className="space-y-3">
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-20 w-full" />
+        </div>
+      }
+    >
       <UsersContainer />
-    </div>
+    </Suspense>
   );
 };
 

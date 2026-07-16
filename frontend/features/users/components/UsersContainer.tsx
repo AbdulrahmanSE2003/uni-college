@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import UsersStats from "./UsersStats";
 import PageHeader from "@/components/shared/PageHeader";
 import UsersTable from "./UsersTable";
-import PaginationComp from "@/components/shared/Pagination";
+import PaginationComp from "@/components/shared/PaginationComp";
 import TableActions from "./TableActions";
 import { roleOptions, statusOptions } from "@/lib/constants";
 
@@ -27,7 +27,7 @@ const UsersContainer = () => {
     role,
     status,
 
-    limit: 10,
+    limit: 20,
   });
   const users = useMemo(() => data?.users || [], [data]);
 

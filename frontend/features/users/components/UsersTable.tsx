@@ -10,11 +10,12 @@ import {
 import { CustomTableCell } from "@/components/shared/CustomTableCell";
 
 import { User } from "@/types/user.types";
+import ActionCell from "@/components/shared/ActionCell";
 
 const UsersTable = ({ users }: { users: User[] }) => {
   return (
     <div className={`rounded-4xl border border-border w-full`}>
-      <Table>
+      <Table className={`rounded-4xl`}>
         <TableHeader className={`bg-muted`}>
           <TableRow>
             <TableHead>Name</TableHead>
@@ -22,6 +23,8 @@ const UsersTable = ({ users }: { users: User[] }) => {
             <TableHead>Phone</TableHead>
             <TableHead>Gender</TableHead>
             <TableHead>Role</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -47,6 +50,12 @@ const UsersTable = ({ users }: { users: User[] }) => {
                       : "default"
                 }
               />
+              <CustomTableCell
+                value={row.isActive ? "Active" : "inActive"}
+                type="badge"
+                badgeVariant={row.isActive ? "success" : "destructive"}
+              />
+              <ActionCell row={row} />
             </TableRow>
           ))}
         </TableBody>

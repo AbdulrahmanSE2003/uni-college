@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SidebarTrigger } from "../ui/sidebar";
+import { ThemeToggle } from "./ThemeToggle";
 
 const AppHeader = () => {
   const pathname = usePathname();
@@ -34,6 +35,8 @@ const AppHeader = () => {
           {pathname.slice(1).split("/").at(0)}
         </div>
       </div>
+
+      <ThemeToggle />
 
       <div className="text-sm text-muted-foreground font-medium">
         {formattedTime}

@@ -4,28 +4,26 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
 } from "@/components/ui/sidebar";
+
 import NavLinks from "./NavLinks";
 import SidebarFooterActions from "./SidebarFooterActions";
 
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader
-        className={`flex flex-row justify-between items-center px-3`}
-      >
-        <span className={`font-semibold text-lg`}>
-          <span className={`text-primary`}>Uni</span>-College 🎓
+      <SidebarHeader className="h-16 justify-center px-4 border-b">
+        <span className="text-xl font-bold">
+          <span className="text-primary">Uni</span>-College
         </span>
       </SidebarHeader>
-      <SidebarContent className={`px-3`}>
-        <SidebarGroup />
+
+      <SidebarContent className="p-2">
         <NavLinks />
-        <SidebarGroup />
       </SidebarContent>
-      <SidebarFooter className={`px-3`}>
+
+      <SidebarFooter className="border-t p-2">
         <SidebarFooterActions />
       </SidebarFooter>
     </Sidebar>

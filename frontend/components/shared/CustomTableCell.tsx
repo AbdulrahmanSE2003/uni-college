@@ -14,7 +14,12 @@ interface TableCellDynamicProps {
   type?: CellType;
   value?: string;
   href?: string;
-  badgeVariant?: "default" | "secondary" | "destructive" | "outline";
+  badgeVariant?:
+    | "default"
+    | "secondary"
+    | "destructive"
+    | "outline"
+    | "success";
   children?: ReactNode; // For the "custom" type
   className?: string;
 }

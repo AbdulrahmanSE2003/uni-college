@@ -22,7 +22,12 @@ const PaginationComp = ({
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious onClick={() => setPage(page - 1)} />
+          <PaginationPrevious
+            className={
+              page === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"
+            }
+            onClick={page > 1 ? () => setPage(page - 1) : undefined}
+          />
         </PaginationItem>
 
         {Array.from({ length: totalPages }).map((_, index) => (
@@ -38,7 +43,14 @@ const PaginationComp = ({
         ))}
 
         <PaginationItem>
-          <PaginationNext onClick={() => setPage(page + 1)} />
+          <PaginationNext
+            className={
+              page === totalPages
+                ? "pointer-events-none opacity-50"
+                : "cursor-pointer"
+            }
+            onClick={page < totalPages ? () => setPage(page + 1) : undefined}
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

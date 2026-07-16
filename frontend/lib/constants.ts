@@ -19,13 +19,32 @@ import {
 
 export type LinkCategory = "general" | "academic" | "management" | "system";
 
-interface SidebarLinks {
+export interface SidebarLinks {
   label: string;
   icon: LucideIcon;
   href: string;
   owner: Role | "all";
   category: LinkCategory;
 }
+
+export const SIDEBAR_GROUPS = [
+  {
+    key: "general",
+    label: "General",
+  },
+  {
+    key: "academic",
+    label: "Academic",
+  },
+  {
+    key: "management",
+    label: "Management",
+  },
+  {
+    key: "system",
+    label: "System",
+  },
+] as const;
 
 export const NAV_LINKS: SidebarLinks[] = [
   // General
@@ -145,4 +164,19 @@ export const statusOptions = [
   { label: "All", value: "all" },
   { label: "Active", value: "active" },
   { label: "Inactive", value: "inActive" },
+];
+
+export const genderOptions = [
+  {
+    label: "Male",
+    value: "Male",
+  },
+  {
+    label: "Female",
+    value: "Female",
+  },
+  {
+    label: "N/A",
+    value: "N/A",
+  },
 ];

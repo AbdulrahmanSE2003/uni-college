@@ -4,7 +4,7 @@ import User from "../models/userModel";
 import APIFeatures from "../utils/apiFeatures";
 import { AppError } from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
-import { getAll, getOne } from "../utils/factory";
+import { deleteOne, getAll, getOne, updateOne } from "../utils/factory";
 import resHandler from "../utils/resHandler";
 
 export const changePassword = catchAsync(async (req, res, next) => {
@@ -127,7 +127,7 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
   const users = await features.query;
 
   const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
+  const limit = Number(req.query.limit) || 20;
 
   res.status(200).json({
     status: true,
@@ -137,5 +137,26 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
     pages: Math.ceil(stats.totalUsers / limit),
     stats,
     users,
+  });
+});
+
+export const updateUser = updateOne(User);
+
+export const deleteUser = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  const user = await User.findByIdAndUpdate(
+    id,
+    { isActive: false },
+    { new: true, runValidators: false },
+  );
+
+  if (!user) {
+    return next(new AppError("User not found.", 404));
+  }
+
+  res.status(200).json({
+    status: true,
+    message: "User deactivated successfully.",
   });
 });

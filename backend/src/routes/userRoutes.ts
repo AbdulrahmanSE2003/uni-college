@@ -10,8 +10,10 @@ import {
 } from "../controllers/authController";
 import {
   changePassword,
+  deleteUser,
   getAllUsers,
   getMe,
+  updateUser,
 } from "../controllers/userController";
 
 const userRoutes = express.Router();
@@ -29,5 +31,9 @@ userRoutes.route("/change-password").patch(changePassword);
 userRoutes.use(checkFirstLogin); // ← blocks everything below if first login
 
 userRoutes.route("/me").get(getMe);
+userRoutes
+  .route("/:id")
+  .patch(restrictTo("admin"), updateUser)
+  .delete(restrictTo("admin"), deleteUser);
 
 export default userRoutes;

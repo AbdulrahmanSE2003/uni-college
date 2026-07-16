@@ -1,3 +1,4 @@
+import { Role } from "@/types/common.types";
 import { User } from "@/types/user.types";
 
 export interface Stats {
@@ -17,4 +18,18 @@ export interface UsersResponse {
   results: number;
   total: number;
   users: User[];
+}
+
+export interface UpdateUserPayload {
+  name: string;
+  email: string;
+  phone: string;
+  gender: "Male" | "Female" | "N/A";
+  role: Role;
+  isActive: boolean;
+}
+
+export interface UpdateUserResponse {
+  status: boolean;
+  updatedUser: User;
 }

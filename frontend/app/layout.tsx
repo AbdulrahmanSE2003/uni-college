@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import QueryProvider from "@/providers/query-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "./providers/ThemeProvider";
 
 const figtreeHeading = Figtree({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn(
         "h-full",
         "antialiased",
@@ -52,9 +54,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <QueryProvider>
-          <Toaster position="top-right" />
-          <main>{children}</main>
-          <ReactQueryDevtools initialIsOpen={false} />
+          <ThemeProvider>
+            <Toaster position="top-right" />
+            <main>{children}</main>
+            <ReactQueryDevtools initialIsOpen={false} />
+          </ThemeProvider>
         </QueryProvider>
       </body>
     </html>
