@@ -53,7 +53,7 @@ const UserForm = ({
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-5">
-      <FieldGroup>
+      <FieldGroup className={`gap-y-2`}>
         <Controller
           name="name"
           control={control}
@@ -112,7 +112,7 @@ const UserForm = ({
               <TableFilters
                 value={field.value}
                 onValueChange={field.onChange}
-                options={roleOptions}
+                options={roleOptions.slice(1)}
               />
             </Field>
           )}
@@ -144,7 +144,7 @@ const UserForm = ({
               <TableFilters
                 value={field.value ? "active" : "inactive"}
                 onValueChange={(value) => field.onChange(value === "active")}
-                options={statusOptions}
+                options={statusOptions.slice(1)}
               />
             </Field>
           )}

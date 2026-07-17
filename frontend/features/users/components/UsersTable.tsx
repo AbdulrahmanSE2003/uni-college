@@ -55,7 +55,7 @@ const UsersTable = ({ users }: { users: User[] }) => {
                 type="badge"
                 badgeVariant={row.isActive ? "success" : "destructive"}
               />
-              <ActionCell row={row} />
+              <ActionCell row={row} user={row} />
             </TableRow>
           ))}
         </TableBody>

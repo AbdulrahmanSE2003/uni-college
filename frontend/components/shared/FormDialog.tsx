@@ -5,6 +5,7 @@ import { ReactElement, ReactNode, useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -12,11 +13,12 @@ import {
 
 interface FormDialogProps {
   title: string;
+  description?: string;
   trigger: ReactElement;
-  children: ReactNode;
+  children: ReactNode | (({ close }: { close: () => void }) => ReactNode);
 }
 
-const FormDialog = ({ title, trigger, children }: FormDialogProps) => {
+const FormDialog = ({ title, description, trigger, children }: FormDialogProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -26,9 +28,12 @@ const FormDialog = ({ title, trigger, children }: FormDialogProps) => {
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
+          {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
 
-        {children}
+        {typeof children === "function"
+          ? children({ close: () => setOpen(false) })
+          : children}
       </DialogContent>
     </Dialog>
   );

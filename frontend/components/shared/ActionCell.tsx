@@ -1,27 +1,25 @@
 "use client";
 
-import { PenBoxIcon, Trash2, X } from "lucide-react";
+import { PenBoxIcon, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { CustomTableCell } from "@/components/shared/CustomTableCell";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 
 import { useDeleteUser } from "@/features/users/hooks/use-delete-user";
-import FormDialog from "./FormDialog";
-import { useUpdateUser } from "@/features/users/hooks/use-update-user";
-import UserForm from "@/features/users/components/UserForm";
+import EditUserDialog from "@/features/users/components/EditUserDialog";
 import { User } from "@/types/user.types";
-import { useState } from "react";
 
 interface ActionCellProps<T extends { _id: string; isActive: boolean }> {
   row: T;
+  user: User;
 }
 
-const ActionCell = <T extends { _id: string; isActive: boolean; user: User }>({
+const ActionCell = <T extends { _id: string; isActive: boolean }>({
   row,
+  user,
 }: ActionCellProps<T>) => {
   const deleteUserMutation = useDeleteUser();
-  const updateMutation = useUpdateUser();
 
   return (
     <CustomTableCell
@@ -30,21 +28,14 @@ const ActionCell = <T extends { _id: string; isActive: boolean; user: User }>({
       badgeVariant={row.isActive ? "success" : "destructive"}
       className="flex items-center gap-2"
     >
-      <FormDialog
+      <EditUserDialog
+        user={user}
         trigger={
           <Button variant="warning" size="icon-sm">
             <PenBoxIcon />
           </Button>
         }
-        title="Edit User"
-      >
-        <UserForm
-          close={() => {}}
-          defaultValues={row.user}
-          isPending={updateMutation.isPending}
-          onSubmit={() => updateMutation.mutateAsync(row._id)}
-        />
-      </FormDialog>
+      />
 
       <ConfirmDialog
         trigger={
