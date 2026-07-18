@@ -8,7 +8,7 @@ import { getErrorMessage } from "@/lib/get-error-message";
 import { User } from "@/types/user.types";
 
 import { useUpdateUser } from "../hooks/use-update-user";
-import { UpdateUserPayload } from "../types/users.types";
+import { AddUpdateUserPayload } from "../types/users.types";
 import UserForm from "./UserForm";
 
 interface EditUserDialogProps {
@@ -19,7 +19,7 @@ interface EditUserDialogProps {
 const EditUserDialog = ({ user, trigger }: EditUserDialogProps) => {
   const updateMutation = useUpdateUser();
 
-  const handleSubmit = async (data: UpdateUserPayload) => {
+  const handleSubmit = async (data: AddUpdateUserPayload) => {
     await updateMutation.mutateAsync(
       { id: user._id, data },
       {

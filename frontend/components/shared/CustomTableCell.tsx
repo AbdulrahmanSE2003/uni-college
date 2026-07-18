@@ -1,12 +1,11 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Copy, CopyCheck, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { toast } from "sonner";
+import Copy from "./Copy";
 
 export type CellType = "text" | "badge" | "copy" | "link" | "custom";
 
@@ -32,21 +31,6 @@ export const CustomTableCell = ({
   children,
   className,
 }: TableCellDynamicProps) => {
-  const [isCopied, setIsCopied] = useState(false);
-  const handleCopy = (e: React.MouseEvent) => {
-    setIsCopied(true);
-    e.stopPropagation();
-    if (!value) return;
-    navigator.clipboard.writeText(value);
-    toast("Copied!", {
-      description: `Text copied to clipboard successfully.`,
-    });
-
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 2000);
-  };
-
   return (
     <TableCell className={`align-middle ${className || ""}`}>
       {type === "text" && <span className="text-sm">{value || "N/A"}</span>}
@@ -60,20 +44,7 @@ export const CustomTableCell = ({
       {type === "copy" && (
         <div className="flex items-center gap-2 group max-w-max">
           <span className="text-sm">{value || "N/A"}</span>
-          {value !== "N/A" && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={handleCopy}
-            >
-              {isCopied ? (
-                <CopyCheck className={`size-4`} />
-              ) : (
-                <Copy className="size-4" />
-              )}
-            </Button>
-          )}
+          {value !== "N/A" && <Copy value={value} />}
         </div>
       )}
 

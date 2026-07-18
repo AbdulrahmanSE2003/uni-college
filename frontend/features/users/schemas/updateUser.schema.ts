@@ -14,4 +14,4 @@ export const updateUserSchema = z.object({
   isActive: z.boolean(),
 });
 
-export type UpdateUserSchema = z.infer<typeof updateUserSchema>;
+export type updateUserSchema = z.infer<typeof updateUserSchema>;

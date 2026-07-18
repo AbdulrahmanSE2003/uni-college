@@ -16,7 +16,7 @@ import TableFilters from "@/components/shared/TableFilters";
 
 import { genderOptions, roleOptions, statusOptions } from "@/lib/constants";
 
-import { UpdateUserPayload } from "../types/users.types";
+import { AddUpdateUserPayload } from "../types/users.types";
 
 import { updateUserSchema } from "../schemas/updateUser.schema";
 import { User } from "@/types/user.types";
@@ -24,7 +24,7 @@ import { User } from "@/types/user.types";
 interface UserFormProps {
   defaultValues: User;
   isPending?: boolean;
-  onSubmit: (values: UpdateUserPayload) => Promise<unknown>;
+  onSubmit: (values: AddUpdateUserPayload) => Promise<unknown>;
   close: () => void;
 }
 
@@ -34,7 +34,7 @@ const UserForm = ({
   onSubmit,
   close,
 }: UserFormProps) => {
-  const { handleSubmit, control } = useForm<UpdateUserPayload>({
+  const { handleSubmit, control } = useForm<AddUpdateUserPayload>({
     resolver: zodResolver(updateUserSchema),
     defaultValues: {
       name: defaultValues.name,
@@ -46,14 +46,14 @@ const UserForm = ({
     },
   });
 
-  const submit = async (values: UpdateUserPayload) => {
+  const submit = async (values: AddUpdateUserPayload) => {
     await onSubmit(values);
     close();
   };
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-5">
-      <FieldGroup className={`gap-y-2`}>
+      <FieldGroup className={``}>
         <Controller
           name="name"
           control={control}

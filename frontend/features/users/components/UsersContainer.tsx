@@ -12,6 +12,10 @@ import UsersTable from "./UsersTable";
 import PaginationComp from "@/components/shared/PaginationComp";
 import TableActions from "./TableActions";
 import { roleOptions, statusOptions } from "@/lib/constants";
+import AddModal from "../../../components/shared/AddModal";
+import DynamicForm from "@/components/shared/DynamicForm";
+import AddUserModal from "./AddUserModal";
+import UsersSkeleton from "./UsersSkeleton";
 
 const UsersContainer = () => {
   const [search, setSearch] = useState("");
@@ -31,14 +35,8 @@ const UsersContainer = () => {
   });
   const users = useMemo(() => data?.users || [], [data]);
 
-  if (!data) return <NotFound />;
   if (isPending) {
-    return (
-      <div className="space-y-3">
-        <Skeleton className="h-8 w-full" />
-        <Skeleton className="h-20 w-full" />
-      </div>
-    );
+    return <UsersSkeleton />;
   }
 
   if (error) return <Error />;
@@ -56,15 +54,18 @@ const UsersContainer = () => {
       {/* 2. Statistical Metrics Cards */}
       <UsersStats stats={data.stats} total={data.total} />
       <div className={`flex flex-col gap-y-4 items-end`}>
-        {/* 3. Utilities */}
-        <TableActions
-          search={search}
-          setSearch={setSearch}
-          role={role}
-          setRole={setRole}
-          status={status}
-          setStatus={setStatus}
-        />
+        <div className={`flex items-center justify-between w-full`}>
+          <AddUserModal />
+          {/* 3. Utilities */}
+          <TableActions
+            search={search}
+            setSearch={setSearch}
+            role={role}
+            setRole={setRole}
+            status={status}
+            setStatus={setStatus}
+          />
+        </div>
         <UsersTable users={users} />
       </div>
 
