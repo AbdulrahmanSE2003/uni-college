@@ -8,7 +8,7 @@ export interface BaseUser {
   email: string;
   role: Role;
   phone: string;
-  gender: "Male" | "Female" | "N/A";
+  gender: "male" | "female" | "n/a";
   isActive: boolean;
   isFirstLogin: boolean;
   createdAt: string;

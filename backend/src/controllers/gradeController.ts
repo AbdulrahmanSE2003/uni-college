@@ -36,13 +36,33 @@ export const getAllGrades = getAll(Grade);
 
 export const getGrade = getOne(Grade);
 
-export const createGrade = createOne(Grade, async (doc, req) => {
+export const createGrade = catchAsync(async (req, res, next) => {
+  const userId = req.user._id;
+
+  const { name, academicYear } = req.body;
+
+  if (!name || !academicYear)
+    return next(
+      new AppError(
+        "Invalid operation, please provide name, academicYear,",
+        400,
+      ),
+    );
+
+  const grade = await Grade.create({
+    name,
+    academicYear,
+    createdBy: userId,
+  });
+
   await logActivity({
     userId: req.user._id,
-    action: "GRADE_CREATED",
-    details: `Admin created grade: ${doc.name} (${doc.academicYear})`,
+    action: "GRADE_CREATED  ",
+    details: `Admin Modified grade: ${req.user.name}`,
     req,
   });
+
+  resHandler(res, 201, "grade", grade);
 });
 
 export const updateGrade = updateOne(Grade, async (doc, req) => {

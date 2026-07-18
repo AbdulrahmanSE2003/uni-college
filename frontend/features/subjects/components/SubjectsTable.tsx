@@ -1,37 +1,42 @@
 import {
   Table,
   TableBody,
-  TableCaption,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { CustomTableCell } from "@/components/shared/CustomTableCell";
+
+import ActionCell from "@/components/shared/ActionCell";
 import { Subject } from "@/types/student.types";
 
 const SubjectsTable = ({ subjects }: { subjects: Subject[] }) => {
   return (
-    <Table>
-      <TableCaption>Total Subjects</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Subject</TableHead>
-          <TableHead>Teacher</TableHead>
-          <TableHead>Grade</TableHead>
-          <TableHead className="text-right">Materials</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {subjects.map((row) => (
-          <TableRow key={row._id}>
-            <TableCell className="font-medium">{row.title}</TableCell>
-            <TableCell>{row.teacherId.userId.name}</TableCell>
-            <TableCell>{row.gradeId.name}</TableCell>
-            <TableCell className="text-right">{row.materials.length}</TableCell>
+    <div className={`rounded-2xl border border-border w-full`}>
+      <Table className={``}>
+        <TableHeader className={`bg-muted`}>
+          <TableRow>
+            <TableHead>Title</TableHead>
+            <TableHead>Teacher</TableHead>
+            <TableHead>Grade</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {subjects.map((row) => (
+            <TableRow key={row._id}>
+              <CustomTableCell
+                className="font-medium capitalize"
+                value={row.title}
+              ></CustomTableCell>
+              <CustomTableCell value={row.teacherId.userId?.name} type="text" />
+              <CustomTableCell value={row.gradeId.name} type="text" />
+              <ActionCell row={row} user={row} />
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 

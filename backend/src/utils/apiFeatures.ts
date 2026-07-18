@@ -22,10 +22,11 @@ class APIFeatures<T extends Query<any, any>> {
     const queryObj = { ...this.queryString };
 
     if (queryObj.role === "all") delete queryObj.role;
+    if (queryObj.gradeId === "all") delete queryObj.gradeId;
     if (queryObj.status === "all") delete queryObj.status;
 
     if (queryObj.status === "active") queryObj.isActive = true;
-    if (queryObj.status === "inActive") queryObj.isActive = false;
+    if (queryObj.status === "inactive") queryObj.isActive = false;
 
     delete queryObj.status;
 

@@ -24,7 +24,7 @@ export interface AddUpdateUserPayload {
   name: string;
   email: string;
   phone: string;
-  gender: "Male" | "Female" | "N/A";
+  gender: "male" | "female" | "n/a";
   role: Role;
   isActive: boolean;
 }

@@ -160,23 +160,15 @@ export const roleOptions = [
   { label: "Teacher", value: "teacher" },
   { label: "Student", value: "student" },
 ];
+
 export const statusOptions = [
   { label: "All", value: "all" },
   { label: "Active", value: "active" },
-  { label: "Inactive", value: "inActive" },
+  { label: "Inactive", value: "inactive" },
 ];
 
 export const genderOptions = [
-  {
-    label: "Male",
-    value: "Male",
-  },
-  {
-    label: "Female",
-    value: "Female",
-  },
-  {
-    label: "N/A",
-    value: "N/A",
-  },
+  { label: "Male", value: "male" },
+  { label: "Female", value: "female" },
+  { label: "N/A", value: "n/a" },
 ];

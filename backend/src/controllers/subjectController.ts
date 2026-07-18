@@ -1,25 +1,61 @@
 import Student from "../models/studentModel";
 import Subject from "../models/subjectModel";
 import Teacher from "../models/teacherModel";
+import APIFeatures from "../utils/apiFeatures";
 import { AppError } from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
 import { deleteOne, getAll, getOne, updateOne } from "../utils/factory";
 import resHandler from "../utils/resHandler";
 
-export const getAllSubjects = getAll(Subject, [
-  {
-    path: "gradeId",
-    select: "name",
-  },
-  {
-    path: "teacherId",
-    select: "userId",
-    populate: {
-      path: "userId",
-      select: "name",
+export const getAllSubjects = catchAsync(async (req, res, next) => {
+  const [stats] = await Subject.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalSubjects: { $sum: 1 },
+        totalMaterials: { $sum: { $size: "$materials" } },
+        grades: { $addToSet: "$gradeId" },
+        teachers: { $addToSet: "$teacherId" },
+      },
     },
-  },
-]);
+    {
+      $project: {
+        _id: 0,
+        totalSubjects: 1,
+        totalMaterials: 1,
+        totalGrades: { $size: "$grades" },
+        totalTeachers: { $size: "$teachers" },
+      },
+    },
+  ]);
+
+  const features = new APIFeatures(
+    Subject.find()
+      .populate({
+        path: "teacherId",
+        select: "userId",
+        populate: { path: "userId", select: "name" },
+      })
+      .populate("gradeId", "name academicYear"),
+    req.query,
+  )
+    .filter()
+    .search()
+    .sort()
+    .limitFields()
+    .paginate();
+  const subjects = await features.query;
+
+  resHandler(res, 200, "subjects", {
+    subjects,
+    stats: stats ?? {
+      totalSubjects: 0,
+      totalMaterials: 0,
+      totalGrades: 0,
+      totalTeachers: 0,
+    },
+  });
+});
 
 export const getSubject = getOne(Subject);
 

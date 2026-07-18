@@ -1,9 +1,13 @@
 import { Request } from "express";
 import ActivitiesLogs from "../models/activitiesLogsModel";
-import { ObjectId } from "mongoose";
+import {
+  ObjectId,
+  TypeExpressionOperatorReturningObjectId,
+  Types,
+} from "mongoose";
 
 interface LogActivityOptions {
-  userId: ObjectId;
+  userId: Types.ObjectId;
   action: string;
   details: string;
   req: Request;

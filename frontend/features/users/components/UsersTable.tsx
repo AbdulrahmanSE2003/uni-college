@@ -51,7 +51,7 @@ const UsersTable = ({ users }: { users: User[] }) => {
                 }
               />
               <CustomTableCell
-                value={row.isActive ? "Active" : "inActive"}
+                value={row.isActive ? "Active" : "Inactive"}
                 type="badge"
                 badgeVariant={row.isActive ? "success" : "destructive"}
               />

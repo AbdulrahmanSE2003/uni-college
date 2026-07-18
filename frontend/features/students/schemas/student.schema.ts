@@ -9,7 +9,7 @@ export const createStudentSchema = z.object({
 
   phone: z.string().trim().min(3),
 
-  gender: z.enum(["Male", "Female", "N/A"]),
+  gender: z.enum(["male", "female", "n/a"]),
 });
 
 export type CreateStudentSchema = z.infer<typeof createStudentSchema>;

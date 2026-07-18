@@ -1,7 +1,20 @@
 import { Subject } from "@/types/student.types";
 
+interface Stats {
+  totalSubjects: number;
+  totalMaterials: number;
+  totalGrades: number;
+  totalTeachers: number;
+}
+
 export interface SubjectResponse {
   status: boolean;
   results: number;
-  subjects: Subject[];
+  subjects: { stats: Stats; subjects: Subject[] };
 }
+
+export type SubjectPayload = {
+  name: string;
+  gradeId: string;
+  teacherId?: string;
+};

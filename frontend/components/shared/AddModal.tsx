@@ -25,9 +25,9 @@ const AddModal = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <Button className={``}>
+          <Button className={`capitalize`}>
             <PlusCircle />
-            Add User
+            {title}
           </Button>
         }
       />

@@ -3,5 +3,5 @@ export interface StudentPayload {
   email: string;
   gradeId: string;
   phone: string;
-  gender: "Male" | "Female";
+  gender: "male" | "female";
 }

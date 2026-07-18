@@ -1,10 +1,7 @@
 "use client";
-
-import { useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Shield, GraduationCap, UserSquare } from "lucide-react";
-import StatCard from "./StatCard";
 import { Stats } from "../types/users.types";
+import StatCard from "@/components/shared/StatCard";
 
 interface User {
   _id: string;

@@ -7,7 +7,7 @@ export const updateUserSchema = z.object({
 
   phone: z.string().trim().min(3),
 
-  gender: z.enum(["Male", "Female", "N/A"]),
+  gender: z.enum(["male", "female", "n/a"]),
 
   role: z.enum(["admin", "teacher", "student"]),
 

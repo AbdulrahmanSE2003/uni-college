@@ -12,18 +12,16 @@ import UsersTable from "./UsersTable";
 import PaginationComp from "@/components/shared/PaginationComp";
 import TableActions from "./TableActions";
 import { roleOptions, statusOptions } from "@/lib/constants";
-import AddModal from "../../../components/shared/AddModal";
-import DynamicForm from "@/components/shared/DynamicForm";
 import AddUserModal from "./AddUserModal";
 import UsersSkeleton from "./UsersSkeleton";
 
 const UsersContainer = () => {
   const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
   const [page, setPage] = useState(1);
 
   const [role, setRole] = useState(roleOptions[0].value);
   const [status, setStatus] = useState(statusOptions[0].value);
-  const [debouncedSearch] = useDebounce(search, 500);
 
   const { data, error, isPending } = useUsers({
     search: debouncedSearch,
@@ -44,13 +42,6 @@ const UsersContainer = () => {
 
   return (
     <div className={`flex flex-col gap-y-6`}>
-      {/* 1. Header Section */}
-      <PageHeader
-        heading="Users Directory"
-        description="Manage system accounts, monitor administrative roles, and inspect active
-        users."
-      />
-
       {/* 2. Statistical Metrics Cards */}
       <UsersStats stats={data.stats} total={data.total} />
       <div className={`flex flex-col gap-y-4 items-end`}>
