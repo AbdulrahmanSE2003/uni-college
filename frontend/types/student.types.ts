@@ -14,7 +14,7 @@ interface Material {
 export interface Subject {
   _id: string;
   teacherId: TeacherProfile;
-  title: string;
+  name: string;
   materials: Material[];
   gradeId: string;
 }

@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import QueryProvider from "@/providers/query-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "./providers/ThemeProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const figtreeHeading = Figtree({
   subsets: ["latin"],

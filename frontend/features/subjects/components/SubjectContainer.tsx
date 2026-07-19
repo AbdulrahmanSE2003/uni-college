@@ -14,7 +14,6 @@ import { useGetAllGrades } from "@/features/grades/hooks/use-get-all-grades";
 import { SubjectPayload } from "../types/subject.types";
 import { useGetSubjects } from "../hooks/use-subjects";
 import { useCreateSubject } from "../hooks/use-create-subjects";
-import { subjectFields } from "../config/subject-fields";
 import { createSubjectSchema } from "../schemas/subjects.schema";
 import { BookOpenTextIcon, GraduationCap, Notebook, User } from "lucide-react";
 import StatsCard from "@/components/shared/StatCard";
@@ -22,6 +21,9 @@ import { FieldConfig } from "@/types/field-config.types";
 import { useGetAllTeachers } from "@/features/teachers/hooks/use-get-teachers";
 import SearchBar from "@/components/shared/SearchBar";
 import { useDebounce } from "use-debounce";
+import PageHeader from "@/components/shared/PageHeader";
+import NotAdminSubjectsView from "./NotAdminSubjectsView";
+import PaginationComp from "@/components/shared/PaginationComp";
 
 const SubjectContainer = () => {
   const [gradeId, setGradeId] = useState("all");
@@ -68,26 +70,30 @@ const SubjectContainer = () => {
     label: g.name,
     value: g._id,
   }));
-  const teacherOptions = teachers.users.map((t) => ({
-    label: t.name,
-    value: t.name,
+  const teacherOptions = teachers.teachers.map((t) => ({
+    label: t.userId?.name,
+    value: t._id,
   }));
+
+  console.log(teacherOptions);
 
   const subjectFieldsWithOptions: FieldConfig[] = [
     { name: "name", label: "Subject Name", type: "text" },
-    { name: "gradeId", label: "Grade", type: "select", options: gradeOptions },
     {
       name: "teacherId",
       label: "Teacher",
       type: "select",
       options: teacherOptions,
     },
+    { name: "gradeId", label: "Grade", type: "select", options: gradeOptions },
   ];
 
   const handleCreate = async (payload: SubjectPayload) => {
     try {
       await createMutation.mutateAsync(payload);
     } catch (e) {
+      console.log(e);
+
       throw e;
     }
   };
@@ -95,7 +101,11 @@ const SubjectContainer = () => {
   return (
     <>
       {user?.role === "admin" ? (
-        <div className="flex flex-col gap-y-6 items-end">
+        <div className="flex flex-col gap-y-6">
+          <PageHeader
+            heading="Subjects Directory"
+            description="Manage subjects, monitor each grade, and Learning cycle."
+          />
           {/* Stat Cards */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 w-full">
             <StatsCard
@@ -136,25 +146,26 @@ const SubjectContainer = () => {
               )}
             </AddModal>
 
-            <div className={`flex gap-3 items-center`}>
+            <div className={`flex gap-3 items-center w-1/2`}>
               <SearchBar search={search} setSearch={setSearch} />
               <TableFilters
                 value={gradeId}
                 onValueChange={setGradeId}
-                placeholder="Grade"
+                placeholder="Filter by Grade"
                 options={gradeOptions}
               />
             </div>
           </div>
 
-          <SubjectsTable subjects={subjects} />
+          <SubjectsTable
+            subjects={subjects}
+            fields={subjectFieldsWithOptions}
+          />
+
+          <PaginationComp page={page} setPage={setPage} totalPages={1} />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {subjects.map((subject) => (
-            <SubjectCard subject={subject} key={subject._id} />
-          ))}
-        </div>
+        <NotAdminSubjectsView subjects={subjects} />
       )}
     </>
   );

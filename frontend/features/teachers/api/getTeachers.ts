@@ -1,7 +1,7 @@
-import { UsersResponse } from "@/features/users/types/users.types";
 import api from "@/lib/axios";
+import { TeacherResponse } from "../types/teacher.types";
 
 export const getTeachers = async () => {
-  const response = await api.get<UsersResponse>("/users?role=teacher");
+  const response = await api.get<TeacherResponse>("/admin/teacher");
   return response.data;
 };

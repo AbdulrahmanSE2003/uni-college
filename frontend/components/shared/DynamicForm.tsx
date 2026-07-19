@@ -50,7 +50,6 @@ const DynamicForm = <T extends FieldValues>({
   });
 
   const submit = async (data: T) => {
-    console.log("here");
     await onSubmit(data);
     close();
   };

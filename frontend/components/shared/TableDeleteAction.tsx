@@ -11,7 +11,7 @@ interface TableDeleteActionProps {
 const TableDeleteAction = ({
   isDeletePending,
   onDelete,
-  canDelete,
+  canDelete = true,
 }: TableDeleteActionProps) => {
   return (
     <ConfirmDialog

@@ -8,11 +8,12 @@ import Error from "@/app/error";
 import UsersTable from "./UsersTable";
 import PaginationComp from "@/components/shared/PaginationComp";
 import { roleOptions, statusOptions } from "@/lib/constants";
-import UsersSkeleton from "./UsersSkeleton";
 import StatsCard from "@/components/shared/StatCard";
 import { GraduationCap, Shield, Users, UserSquare } from "lucide-react";
 import SearchBar from "@/components/shared/SearchBar";
 import TableFilters from "@/components/shared/TableFilters";
+import PageSkeleton from "@/components/shared/PageSkeleton";
+import PageHeader from "@/components/shared/PageHeader";
 
 const UsersContainer = () => {
   const [search, setSearch] = useState("");
@@ -33,7 +34,7 @@ const UsersContainer = () => {
   const users = useMemo(() => data?.users || [], [data]);
 
   if (isPending) {
-    return <UsersSkeleton />;
+    return <PageSkeleton />;
   }
 
   if (error) return <Error />;
@@ -43,6 +44,12 @@ const UsersContainer = () => {
 
   return (
     <div className={`flex flex-col gap-y-6`}>
+      {/* 1. Header Section */}
+      <PageHeader
+        heading="Users Directory"
+        description="Manage system accounts, monitor administrative roles, and inspect active
+                    users."
+      />
       {/* 2. Statistical Metrics Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 w-full">
         <StatsCard
@@ -79,13 +86,13 @@ const UsersContainer = () => {
           <TableFilters
             value={role}
             onValueChange={setRole}
-            placeholder="Role"
+            placeholder="Filter by Role"
             options={roleOptions}
           />
           <TableFilters
             value={status}
             onValueChange={setStatus}
-            placeholder="Status"
+            placeholder="Filter by Status"
             options={statusOptions}
           />
         </div>

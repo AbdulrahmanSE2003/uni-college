@@ -6,6 +6,7 @@ import PersonalDetails from "./PersonalDetails";
 import EducationalDetails from "./EducationalDetails";
 import AccountDetails from "./AccountDetails";
 import ProfileSkeleton from "./ProfileSkeleton";
+import PageHeader from "@/components/shared/PageHeader";
 // import { Badge } from "@/components/ui/badge";
 
 const ProfileContainer = () => {
@@ -27,6 +28,10 @@ const ProfileContainer = () => {
 
   return (
     <div className="w-full flex flex-col gap-6">
+      <PageHeader
+        heading="My Profile"
+        description="Here you can manage your own account."
+      />
       {/* Personal Details */}
       <PersonalDetails user={userData} />
 

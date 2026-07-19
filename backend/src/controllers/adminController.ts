@@ -8,6 +8,11 @@ import { generateStudentId } from "../utils/generateStudentId";
 import resHandler from "../utils/resHandler";
 import { sendWelcomeEmail } from "../utils/sendEmail";
 import Teacher from "../models/teacherModel";
+import { getAll } from "../utils/factory";
+
+export const getAllTeachers = getAll(Teacher, [
+  { path: "userId", select: "name" },
+]);
 
 export const createStudent = catchAsync(async (req, res, next) => {
   const { name, email, gradeId, phone, gender } = req.body;
@@ -78,7 +83,7 @@ export const createStudent = catchAsync(async (req, res, next) => {
 export const createTeacher = catchAsync(async (req, res, next) => {
   const { name, email, grades, subjects, phone, gender } = req.body;
 
-  if (!name || !email || !grades || !subjects)
+  if (!name || !email || !grades)
     return next(
       new AppError("Invalid operation, please provide needed data", 400),
     );

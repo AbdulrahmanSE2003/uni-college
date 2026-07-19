@@ -8,71 +8,38 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CustomTableCell } from "@/components/shared/CustomTableCell";
-
-import { User } from "@/types/user.types";
-import { useDeleteUser } from "../hooks/use-delete-user";
-import TableDeleteAction from "@/components/shared/TableDeleteAction";
+import { TeacherUser } from "@/types/user.types";
 import TableEditDialog from "@/components/shared/TableEditDialog";
 import DynamicForm from "@/components/shared/DynamicForm";
-import { UpdateUserPayload } from "../types/users.types";
-import { updateUserSchema } from "../schemas/updateUser.schema";
-import { useUpdateUser } from "../hooks/use-update-user";
-import { userFields } from "../config/user-fields";
+import { TeacherProfile } from "@/types/teacher.types";
 
-const UsersTable = ({ users }: { users: User[] }) => {
-  const deleteMutation = useDeleteUser();
-  const updateMutation = useUpdateUser();
-
+const TeachersTable = ({ teachers }: { teachers: TeacherProfile[] }) => {
   return (
     <div
-      className={`rounded-2xl ${users.length ? " border border-border" : ""} w-full`}
+      className={`rounded-2xl ${teachers.length ? " border border-border" : ""} w-full`}
     >
       <Table className={``}>
         <TableHeader className={`bg-muted`}>
           <TableRow>
             <TableHead>#</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead>Gender</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Grades</TableHead>
+            <TableHead>Subjects</TableHead>
+            <TableHead>Joining Date</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((row, i) => (
+          {teachers.map((row, i) => (
             <TableRow key={row._id}>
               <CustomTableCell
                 className="text-muted-foreground"
                 value={`${i + 1}`}
-              ></CustomTableCell>
+              />
               <CustomTableCell
                 className="font-medium capitalize"
-                value={row.name}
-              ></CustomTableCell>
-              <CustomTableCell value={row.email} type="copy" />
-              <CustomTableCell value={row.phone} type="copy">
-                {row.phone}
-              </CustomTableCell>
-              <CustomTableCell value={row.gender} />
-              <CustomTableCell
-                value={row.role}
-                type="badge"
-                badgeVariant={
-                  row.role === "admin"
-                    ? "destructive"
-                    : row.role === "teacher"
-                      ? "secondary"
-                      : "default"
-                }
+                value={row.userId.name}
               />
-              <CustomTableCell
-                value={row.isActive ? "Active" : "Inactive"}
-                type="badge"
-                badgeVariant={row.isActive ? "success" : "destructive"}
-              />
-              <CustomTableCell
+              {/*<CustomTableCell
                 type="custom"
                 className="flex items-center gap-1.5"
               >
@@ -102,7 +69,7 @@ const UsersTable = ({ users }: { users: User[] }) => {
                   isDeletePending={deleteMutation.isPending}
                   canDelete={row.isActive}
                 />
-              </CustomTableCell>
+              </CustomTableCell> */}
             </TableRow>
           ))}
         </TableBody>
@@ -111,4 +78,4 @@ const UsersTable = ({ users }: { users: User[] }) => {
   );
 };
 
-export default UsersTable;
+export default TeachersTable;

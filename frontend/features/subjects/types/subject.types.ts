@@ -15,6 +15,6 @@ export interface SubjectResponse {
 
 export type SubjectPayload = {
   name: string;
-  gradeId: string;
   teacherId?: string;
+  gradeId: string;
 };

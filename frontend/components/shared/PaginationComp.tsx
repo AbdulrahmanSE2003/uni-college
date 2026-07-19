@@ -19,7 +19,7 @@ const PaginationComp = ({
   setPage: (p: number) => void;
 }) => {
   return (
-    <Pagination>
+    <Pagination className={`mt-auto`}>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious

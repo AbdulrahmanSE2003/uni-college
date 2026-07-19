@@ -1,8 +1,12 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const UsersSkeleton = () => {
+const PageSkeleton = () => {
   return (
     <div className={`flex flex-col gap-y-6`}>
+      <div className={`flex flex-col gap-y-2`}>
+        <Skeleton className={`h-10 w-56`} />
+        <Skeleton className={`h-5 w-2/4`} />
+      </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Skeleton className="h-48 w-full" />
         <Skeleton className="h-48 w-full" />
@@ -21,4 +25,4 @@ const UsersSkeleton = () => {
   );
 };
 
-export default UsersSkeleton;
+export default PageSkeleton;
