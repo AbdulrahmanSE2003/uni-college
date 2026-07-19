@@ -5,7 +5,7 @@ export type SelectOption = {
 
 export type FieldConfig = {
   name: string;
-  label: string;
-  type: "text" | "email" | "password" | "tel" | "select";
+  label?: string;
+  type: "text" | "email" | "password" | "tel" | "select" | "switch";
   options?: SelectOption[];
 };

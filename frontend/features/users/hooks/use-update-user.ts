@@ -1,20 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUser } from "../api/updateUser";
+import { createMutation } from "@/lib/create-mutation";
+import { UpdateUserPayload } from "../types/users.types";
+import api from "@/lib/axios";
 
-export const useUpdateUser = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: updateUser,
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["users"],
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ["me"],
-      });
-    },
-  });
-};
+export const useUpdateUser = createMutation<{
+  id: string;
+  data: UpdateUserPayload;
+}>(
+  ({ id, data }) => api.patch(`/users/${id}`, data),
+  "users",
+  "User updated successfully.",
+);

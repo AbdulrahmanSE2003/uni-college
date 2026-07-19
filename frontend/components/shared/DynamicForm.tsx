@@ -24,6 +24,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "../ui/switch";
+import { Label } from "../ui/label";
 
 type DynamicFormProps<T extends FieldValues> = {
   fields: FieldConfig[];
@@ -48,12 +50,18 @@ const DynamicForm = <T extends FieldValues>({
   });
 
   const submit = async (data: T) => {
+    console.log("here");
     await onSubmit(data);
     close();
   };
 
   return (
-    <form onSubmit={handleSubmit(submit)} className="space-y-5">
+    <form
+      onSubmit={handleSubmit(submit, (errors) =>
+        console.log("validation errors: ", errors),
+      )}
+      className="space-y-5"
+    >
       <FieldGroup>
         {fields.map((f) => (
           <Controller
@@ -62,13 +70,10 @@ const DynamicForm = <T extends FieldValues>({
             control={control}
             render={({ field, fieldState }) => (
               <Field>
-                <FieldLabel>{f.label}</FieldLabel>
+                {f.type !== "switch" && <FieldLabel>{f.label}</FieldLabel>}
 
                 {f.type === "select" ? (
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger>
                       <SelectValue placeholder={`Select ${f.label}`} />
                     </SelectTrigger>
@@ -80,6 +85,16 @@ const DynamicForm = <T extends FieldValues>({
                       ))}
                     </SelectContent>
                   </Select>
+                ) : f.type === "switch" ? (
+                  <div
+                    className={`flex justify-start items-center gap-2 my-2 px-1`}
+                  >
+                    <Label htmlFor={field.name}>{f.label}</Label>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </div>
                 ) : (
                   <Input {...field} type={f.type} placeholder={f.label} />
                 )}

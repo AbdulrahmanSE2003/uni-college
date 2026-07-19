@@ -20,7 +20,7 @@ export interface UsersResponse {
   users: User[];
 }
 
-export interface AddUpdateUserPayload {
+export interface UpdateUserPayload {
   name: string;
   email: string;
   phone: string;

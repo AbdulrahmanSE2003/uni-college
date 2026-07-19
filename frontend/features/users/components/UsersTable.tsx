@@ -10,15 +10,18 @@ import {
 import { CustomTableCell } from "@/components/shared/CustomTableCell";
 
 import { User } from "@/types/user.types";
-import ActionCell from "@/components/shared/ActionCell";
-import { Button } from "@/components/ui/button";
-import { PenBoxIcon, Trash2 } from "lucide-react";
-import EditUserDialog from "./EditUserDialog";
 import { useDeleteUser } from "../hooks/use-delete-user";
 import TableDeleteAction from "@/components/shared/TableDeleteAction";
+import TableEditDialog from "@/components/shared/TableEditDialog";
+import DynamicForm from "@/components/shared/DynamicForm";
+import { UpdateUserPayload } from "../types/users.types";
+import { genderOptions, roleOptions, statusOptions } from "@/lib/constants";
+import { updateUserSchema } from "../schemas/updateUser.schema";
+import { useUpdateUser } from "../hooks/use-update-user";
 
 const UsersTable = ({ users }: { users: User[] }) => {
   const deleteMutation = useDeleteUser();
+  const updateMutation = useUpdateUser();
 
   return (
     <div className={`rounded-2xl border border-border w-full`}>
@@ -67,27 +70,53 @@ const UsersTable = ({ users }: { users: User[] }) => {
                 type="badge"
                 badgeVariant={row.isActive ? "success" : "destructive"}
               />
-              {/* <ActionCell
-                onDelete={() => deleteMutation.mutateAsync(row._id)}
-                isDeletePending={deleteMutation.isPending}
-                editDialog={
-                  <EditUserDialog
-                    user={row}
-                    trigger={
-                      <Button variant="warning" size="icon-sm">
-                        <PenBoxIcon />
-                      </Button>
-                    }
-                  />
-                }
-              /> */}
               <CustomTableCell
                 type="custom"
                 className="flex items-center gap-1.5"
               >
-                <Button variant="warning" size="icon-sm">
-                  <PenBoxIcon />
-                </Button>
+                <TableEditDialog title="Edit User">
+                  {({ close }) => (
+                    <DynamicForm<UpdateUserPayload>
+                      fields={[
+                        { name: "name", label: "Name", type: "text" },
+                        { name: "email", label: "Email", type: "text" },
+                        { name: "phone", label: "Phone", type: "text" },
+                        {
+                          name: "gender",
+                          label: "Gender",
+                          type: "select",
+                          options: genderOptions,
+                        },
+                        {
+                          name: "role",
+                          label: "Role",
+                          type: "select",
+                          options: roleOptions,
+                        },
+                        {
+                          name: "isActive",
+                          label: "IsActive",
+                          type: "switch",
+                          options: statusOptions,
+                        },
+                      ]}
+                      schema={updateUserSchema}
+                      defaultValues={{
+                        name: row.name,
+                        email: row.email,
+                        phone: row.phone,
+                        gender: row.gender,
+                        role: row.role,
+                        isActive: row.isActive,
+                      }}
+                      isPending={updateMutation.isPending}
+                      onSubmit={(data) =>
+                        updateMutation.mutateAsync({ id: row._id, data })
+                      }
+                      close={close}
+                    />
+                  )}
+                </TableEditDialog>
                 <TableDeleteAction
                   onDelete={() => deleteMutation.mutateAsync(row._id)}
                   isDeletePending={deleteMutation.isPending}

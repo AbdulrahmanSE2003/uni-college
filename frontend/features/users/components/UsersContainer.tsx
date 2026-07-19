@@ -5,12 +5,8 @@ import { useDebounce } from "use-debounce";
 import NotFound from "@/app/not-found";
 import { useUsers } from "../hooks/use-users";
 import Error from "@/app/error";
-import { Skeleton } from "@/components/ui/skeleton";
-import UsersStats from "./UsersStats";
-import PageHeader from "@/components/shared/PageHeader";
 import UsersTable from "./UsersTable";
 import PaginationComp from "@/components/shared/PaginationComp";
-import TableActions from "./TableActions";
 import { roleOptions, statusOptions } from "@/lib/constants";
 import UsersSkeleton from "./UsersSkeleton";
 import StatsCard from "@/components/shared/StatCard";
@@ -23,8 +19,8 @@ const UsersContainer = () => {
   const [debouncedSearch] = useDebounce(search, 500);
   const [page, setPage] = useState(1);
 
-  const [role, setRole] = useState(roleOptions[0].value);
-  const [status, setStatus] = useState(statusOptions[0].value);
+  const [role, setRole] = useState("all");
+  const [status, setStatus] = useState("all");
 
   const { data, error, isPending } = useUsers({
     search: debouncedSearch,
