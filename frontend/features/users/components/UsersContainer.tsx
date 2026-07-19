@@ -12,8 +12,11 @@ import UsersTable from "./UsersTable";
 import PaginationComp from "@/components/shared/PaginationComp";
 import TableActions from "./TableActions";
 import { roleOptions, statusOptions } from "@/lib/constants";
-import AddUserModal from "./AddUserModal";
 import UsersSkeleton from "./UsersSkeleton";
+import StatsCard from "@/components/shared/StatCard";
+import { GraduationCap, Shield, Users, UserSquare } from "lucide-react";
+import SearchBar from "@/components/shared/SearchBar";
+import TableFilters from "@/components/shared/TableFilters";
 
 const UsersContainer = () => {
   const [search, setSearch] = useState("");
@@ -40,21 +43,54 @@ const UsersContainer = () => {
   if (error) return <Error />;
   if (!data || !data.users) return <NotFound />;
 
+  const { stats } = data;
+
   return (
     <div className={`flex flex-col gap-y-6`}>
       {/* 2. Statistical Metrics Cards */}
-      <UsersStats stats={data.stats} total={data.total} />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 w-full">
+        <StatsCard
+          Icon={Users}
+          iconClass="stroke-blue-500"
+          title="Total Accounts"
+          value={data.total}
+          note=""
+        />
+        <StatsCard
+          Icon={Shield}
+          iconClass="stroke-destructive"
+          title="Administrators"
+          value={stats.admins}
+          note="Full control access"
+        />
+        <StatsCard
+          Icon={GraduationCap}
+          iconClass="stroke-primary"
+          title="Teachers"
+          value={stats.teachers}
+          note="Instructors and moderators"
+        />
+        <StatsCard
+          Icon={UserSquare}
+          title="Students"
+          value={stats.students}
+          note="Active learners"
+        />
+      </div>
       <div className={`flex flex-col gap-y-4 items-end`}>
-        <div className={`flex items-center justify-between w-full`}>
-          <AddUserModal />
-          {/* 3. Utilities */}
-          <TableActions
-            search={search}
-            setSearch={setSearch}
-            role={role}
-            setRole={setRole}
-            status={status}
-            setStatus={setStatus}
+        <div className={`flex gap-3 items-center w-full md:w-1/2`}>
+          <SearchBar search={search} setSearch={setSearch} />
+          <TableFilters
+            value={role}
+            onValueChange={setRole}
+            placeholder="Role"
+            options={roleOptions}
+          />
+          <TableFilters
+            value={status}
+            onValueChange={setStatus}
+            placeholder="Status"
+            options={statusOptions}
           />
         </div>
         <UsersTable users={users} />

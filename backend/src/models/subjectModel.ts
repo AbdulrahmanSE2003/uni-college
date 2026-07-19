@@ -9,7 +9,7 @@ interface Material {
 }
 
 export interface ISubject extends Document {
-  title: string;
+  name: string;
   teacherId: Types.ObjectId;
   gradeId: Types.ObjectId;
   materials: Material[];
@@ -17,7 +17,7 @@ export interface ISubject extends Document {
 
 const subjectSchema: Schema<ISubject> = new mongoose.Schema(
   {
-    title: { type: String, required: true },
+    name: { type: String, required: true },
     teacherId: {
       type: mongoose.Schema.ObjectId,
       ref: "Teacher",
@@ -34,7 +34,7 @@ const subjectSchema: Schema<ISubject> = new mongoose.Schema(
   { timestamps: true },
 );
 
-subjectSchema.index({ title: 1, gradeId: 1 });
+subjectSchema.index({ name: 1, gradeId: 1 });
 subjectSchema.index({ gradeId: 1 });
 
 subjectSchema.post("save", async function () {

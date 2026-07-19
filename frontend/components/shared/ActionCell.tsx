@@ -1,59 +1,48 @@
+// components/shared/ActionCell.tsx
 "use client";
 
-import { PenBoxIcon, Trash2 } from "lucide-react";
-
+import { Trash2, PenBoxIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CustomTableCell } from "@/components/shared/CustomTableCell";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import { ReactNode } from "react";
+import { CustomTableCell } from "./CustomTableCell";
 
-import { useDeleteUser } from "@/features/users/hooks/use-delete-user";
-import EditUserDialog from "@/features/users/components/EditUserDialog";
-import { User } from "@/types/user.types";
-
-interface ActionCellProps<T extends { _id: string; isActive: boolean }> {
-  row: T;
-  user: User;
+interface ActionCellProps {
+  onDelete: () => Promise<void>;
+  isDeletePending: boolean;
+  editDialog: ReactNode;
+  canDelete?: boolean;
 }
 
-const ActionCell = <T extends { _id: string; isActive: boolean }>({
-  row,
-  user,
-}: ActionCellProps<T>) => {
-  const deleteUserMutation = useDeleteUser();
-
+const ActionCell = ({
+  onDelete,
+  isDeletePending,
+  editDialog,
+  canDelete = true,
+}: ActionCellProps) => {
   return (
-    <CustomTableCell
-      value={row.isActive ? "Active" : "Inactive"}
-      type="custom"
-      badgeVariant={row.isActive ? "success" : "destructive"}
-      className="flex items-center gap-2"
-    >
-      <EditUserDialog
-        user={user}
-        trigger={
-          <Button variant="warning" size="icon-sm">
-            <PenBoxIcon />
-          </Button>
-        }
-      />
+    <CustomTableCell>
+      <div className="flex items-center gap-2">
+        {editDialog}
 
-      <ConfirmDialog
-        trigger={
-          <Button
-            disabled={!row.isActive}
-            className={`disabled:cursor-not-allowed`}
-            variant="destructive"
-            size="icon-sm"
-          >
-            <Trash2 />
-          </Button>
-        }
-        title="Delete User?"
-        description="This action will deactivate this user. You can reactivate them later if needed."
-        confirmText="Delete"
-        loading={deleteUserMutation.isPending}
-        onConfirm={() => deleteUserMutation.mutateAsync(row._id)}
-      />
+        <ConfirmDialog
+          trigger={
+            <Button
+              disabled={!canDelete}
+              className="disabled:cursor-not-allowed"
+              variant="destructive"
+              size="icon-sm"
+            >
+              <Trash2 />
+            </Button>
+          }
+          title="Are you sure?"
+          description="This action cannot be undone."
+          confirmText="Delete"
+          loading={isDeletePending}
+          onConfirm={onDelete}
+        />
+      </div>
     </CustomTableCell>
   );
 };

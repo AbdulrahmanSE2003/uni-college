@@ -15,7 +15,7 @@ const UserAssigning = ({ assigning }: { assigning: Subject[] | Grade[] }) => {
             key={assign._id}
             className="px-3 py-1 text-sm font-medium border border-border"
           >
-            {(assign?.title || assign?.name) ?? ""}
+            {assign?.name ?? ""}
           </Badge>
         ))}
       </div>

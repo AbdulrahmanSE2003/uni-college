@@ -1,11 +1,11 @@
 import api from "@/lib/axios";
 import {
-  changePasswordPayload,
-  ChangePasswordResponse,
-} from "../types/resetPassword.types";
+  ChangePasswordPayload,
+  AuthMessageResponse,
+} from "../types/auth.types";
 
-export const changePassword = async (data: changePasswordPayload) => {
-  const response = await api.patch<ChangePasswordResponse>(
+export const changePassword = async (data: ChangePasswordPayload) => {
+  const response = await api.patch<AuthMessageResponse>(
     "/users/change-password",
     data,
     {

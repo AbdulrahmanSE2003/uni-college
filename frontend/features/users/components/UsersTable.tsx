@@ -11,13 +11,21 @@ import { CustomTableCell } from "@/components/shared/CustomTableCell";
 
 import { User } from "@/types/user.types";
 import ActionCell from "@/components/shared/ActionCell";
+import { Button } from "@/components/ui/button";
+import { PenBoxIcon, Trash2 } from "lucide-react";
+import EditUserDialog from "./EditUserDialog";
+import { useDeleteUser } from "../hooks/use-delete-user";
+import TableDeleteAction from "@/components/shared/TableDeleteAction";
 
 const UsersTable = ({ users }: { users: User[] }) => {
+  const deleteMutation = useDeleteUser();
+
   return (
     <div className={`rounded-2xl border border-border w-full`}>
       <Table className={``}>
         <TableHeader className={`bg-muted`}>
           <TableRow>
+            <TableHead>#</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Phone</TableHead>
@@ -28,8 +36,12 @@ const UsersTable = ({ users }: { users: User[] }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((row) => (
+          {users.map((row, i) => (
             <TableRow key={row._id}>
+              <CustomTableCell
+                className="text-muted-foreground"
+                value={`${i + 1}`}
+              ></CustomTableCell>
               <CustomTableCell
                 className="font-medium capitalize"
                 value={row.name}
@@ -55,7 +67,33 @@ const UsersTable = ({ users }: { users: User[] }) => {
                 type="badge"
                 badgeVariant={row.isActive ? "success" : "destructive"}
               />
-              <ActionCell row={row} user={row} />
+              {/* <ActionCell
+                onDelete={() => deleteMutation.mutateAsync(row._id)}
+                isDeletePending={deleteMutation.isPending}
+                editDialog={
+                  <EditUserDialog
+                    user={row}
+                    trigger={
+                      <Button variant="warning" size="icon-sm">
+                        <PenBoxIcon />
+                      </Button>
+                    }
+                  />
+                }
+              /> */}
+              <CustomTableCell
+                type="custom"
+                className="flex items-center gap-1.5"
+              >
+                <Button variant="warning" size="icon-sm">
+                  <PenBoxIcon />
+                </Button>
+                <TableDeleteAction
+                  onDelete={() => deleteMutation.mutateAsync(row._id)}
+                  isDeletePending={deleteMutation.isPending}
+                  canDelete={row.isActive}
+                />
+              </CustomTableCell>
             </TableRow>
           ))}
         </TableBody>

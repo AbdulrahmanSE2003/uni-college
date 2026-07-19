@@ -44,7 +44,7 @@ export const getMe = catchAsync(async (req, res, next) => {
       })
       .populate({
         path: "subjectIds",
-        select: "title",
+        select: "name",
       });
     if (!student)
       return next(new AppError("Invalid operation, student not found.", 404));
@@ -58,7 +58,7 @@ export const getMe = catchAsync(async (req, res, next) => {
       })
       .populate({
         path: "subjectIds",
-        select: "title",
+        select: "name",
       });
     if (!teacher)
       return next(new AppError("Invalid operation, teacher not found.", 404));

@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/get-error-message";
 import { changePasswordSchema } from "../schemas/changePassword.schema";
-import { changePasswordPayload } from "../types/changePassword.types";
+import { ChangePasswordPayload } from "../types/auth.types";
 import { useChangePassword } from "../hooks/use-ChangePassword";
 
 const passwordFields = [
@@ -54,7 +54,7 @@ const ChangePasswordForm = () => {
   const changePasswordMutation = useChangePassword();
   const router = useRouter();
 
-  const onSubmit = (data: changePasswordPayload) => {
+  const onSubmit = (data: ChangePasswordPayload) => {
     changePasswordMutation.mutate(data, {
       onSuccess: () => {
         reset();

@@ -96,7 +96,7 @@ export const getReportCard = catchAsync(async (req, res, next) => {
     };
 
     return {
-      subject: subject.title,
+      subject: subject.name,
       quizAvg: Math.round(quizAvg),
       assignmentAvg: Math.round(assignAvg),
       midterm,

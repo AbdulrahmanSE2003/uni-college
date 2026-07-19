@@ -1,24 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteUser } from "../api/deleteUser";
-import { toast } from "sonner";
-import { getErrorMessage } from "@/lib/get-error-message";
+import { createMutation } from "@/lib/create-mutation";
+import api from "@/lib/axios";
 
-export const useDeleteUser = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: deleteUser,
-
-    onSuccess: () => {
-      toast.success("User deleted successfully.");
-
-      queryClient.invalidateQueries({
-        queryKey: ["users"],
-      });
-    },
-
-    onError: (error) => {
-      toast.error(getErrorMessage(error));
-    },
-  });
-};
+export const useDeleteUser = createMutation<string>(
+  (id) => api.delete(`/users/${id}`),
+  "users",
+  "User deleted successfully.",
+);

@@ -15,7 +15,7 @@ export interface IUser extends Document {
   password: string;
   passwordConfirm: string;
   phone: string;
-  gender: "male" | "female" | "n/a";
+  gender: "male" | "female" | "N/A";
   isActive: boolean;
   role: "admin" | "teacher" | "student";
   isFirstLogin: boolean;
@@ -65,7 +65,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     },
 
     phone: { type: String, default: "N/A" },
-    gender: { type: String, enum: ["male", "female", "n/a"], default: "n/a" },
+    gender: { type: String, enum: ["male", "female", "N/A"], default: "N/A" },
 
     role: {
       type: String,

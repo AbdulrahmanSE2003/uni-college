@@ -111,7 +111,7 @@ export const generateExamByAI = catchAsync(async (req, res, next) => {
 
   // 2. Call Gemini
   const questions = await generateExamQuestions({
-    subject: subject.title,
+    subject: subject.name,
     topic,
     difficulty,
     numberOfQuestions,

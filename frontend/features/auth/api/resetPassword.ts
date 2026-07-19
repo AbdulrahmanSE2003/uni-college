@@ -1,8 +1,8 @@
 import api from "@/lib/axios";
 import {
   ResetPasswordPayload,
-  ResetPasswordResponse,
-} from "../types/changePassword.types";
+  AuthMessageResponse,
+} from "../types/auth.types";
 
 type ResetPasswordRequest = {
   token: string;
@@ -10,7 +10,7 @@ type ResetPasswordRequest = {
 };
 
 export async function resetPassword({ token, data }: ResetPasswordRequest) {
-  const response = await api.patch<ResetPasswordResponse>(
+  const response = await api.patch<AuthMessageResponse>(
     `/users/reset-password/${token}`,
     data,
   );

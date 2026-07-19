@@ -14,7 +14,7 @@ const SubjectCard = ({ subject }: { subject: Subject }) => {
       href={`/subjects/${subject._id}`}
       className={`border-2 border-border shadow-sm flex flex-col gap-3 capitalize p-3 rounded-2xl px-5 hover:border-primary/25 transition-all duration-300 hover:shadow-lg group`}
     >
-      <h3 className={` text-lg font-medium `}>{subject.title}</h3>
+      <h3 className={` text-lg font-medium `}>{subject.name}</h3>
       {role === "student" && (
         <div className={`flex items-center gap-2`}>
           <Presentation

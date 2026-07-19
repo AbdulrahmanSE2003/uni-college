@@ -6,6 +6,7 @@ import { getErrorMessage } from "@/lib/get-error-message";
 export const createMutation = <T>(
   mutationFn: (payload: T) => Promise<unknown>,
   invalidateKey?: string,
+  successMessage = "Done successfully.",
 ) => {
   return () => {
     const qc = useQueryClient();
@@ -13,7 +14,7 @@ export const createMutation = <T>(
       mutationFn,
       onSuccess: () => {
         if (invalidateKey) qc.invalidateQueries({ queryKey: [invalidateKey] });
-        toast.success("Done successfully.");
+        toast.success(successMessage);
       },
       onError: (e) => toast.error(getErrorMessage(e)),
     });

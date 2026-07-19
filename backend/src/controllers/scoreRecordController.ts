@@ -50,7 +50,7 @@ export const getStudentScores = catchAsync(async (req, res, next) => {
 
   const scores = await ScoreRecord.find({ studentId }).populate(
     "subjectId",
-    "title",
+    "name",
   );
 
   resHandler(res, 200, "scores", scores);

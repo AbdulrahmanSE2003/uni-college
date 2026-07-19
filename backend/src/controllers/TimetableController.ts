@@ -71,7 +71,7 @@ export const generateTimetableByAI = catchAsync(async (req, res, next) => {
     );
 
   const subjectsData = subjects.map((s) => ({
-    name: s.title,
+    name: s.name,
     teacherName: (s.teacherId as any).userId?.name || "TBD",
   }));
 
@@ -87,7 +87,7 @@ export const generateTimetableByAI = catchAsync(async (req, res, next) => {
 
   // Map AI response back to our schema with real IDs
   const timeSlots = slots.map((slot) => {
-    const subject = subjects.find((s) => s.title === slot.subjectName);
+    const subject = subjects.find((s) => s.name === slot.subjectName);
 
     // Handle free slots - use undefined instead of null
     if (slot.subjectName === "Free Slot" || !subject) {

@@ -109,15 +109,15 @@ export const getMySubjects = catchAsync(async (req, res, next) => {
 });
 
 export const createSubject = catchAsync(async (req, res, next) => {
-  const { title, teacherId, gradeId } = req.body;
+  const { name, teacherId, gradeId } = req.body;
 
-  if (!title || !teacherId || !gradeId)
+  if (!name || !teacherId || !gradeId)
     return next(
       new AppError("Invalid operation, please provide needed fields.", 400),
     );
 
   const subject = await Subject.create({
-    title,
+    name,
     teacherId,
     gradeId,
   });

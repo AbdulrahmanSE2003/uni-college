@@ -20,7 +20,7 @@ import {
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/get-error-message";
-import { ResetPasswordPayload } from "../types/changePassword.types";
+import { ResetPasswordPayload } from "../types/auth.types";
 import { resetPasswordSchema } from "../schemas/resetPassword.schema";
 import { useResetPassword } from "../hooks/use-ResetPassword";
 

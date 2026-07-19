@@ -54,13 +54,7 @@ const ConfirmDialog = ({
 
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle
-            className={
-              variant === "destructive" ? "text-destructive" : undefined
-            }
-          >
-            {title}
-          </AlertDialogTitle>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
 
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
