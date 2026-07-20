@@ -15,7 +15,7 @@ const teacherSchema = new Schema<ITeacher>(
     subjectIds: [
       { type: mongoose.Schema.ObjectId, ref: "Subject", required: true },
     ],
-    qualification: String,
+    qualification: { type: String, default: "" },
     joiningDate: { type: Date, default: Date.now() },
   },
   { timestamps: true },

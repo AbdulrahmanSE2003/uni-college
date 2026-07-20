@@ -9,6 +9,8 @@ export interface TeacherProfile {
 
   subjectIds: Subject[];
 
+  qualification: string;
+
   joiningDate: string;
   createdAt: string;
   updatedAt: string;

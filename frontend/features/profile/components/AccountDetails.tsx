@@ -11,8 +11,14 @@ const AccountDetails = ({ user }: { user: User }) => {
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <DataField label="Created At" value={user.createdAt} />
-        <DataField label="Last Updated" value={user.updatedAt.split("T")[0]} />
+        <DataField
+          label="Created At"
+          value={new Date(user.createdAt).toLocaleDateString()}
+        />
+        <DataField
+          label="Last Updated"
+          value={new Date(user.updatedAt).toLocaleDateString()}
+        />
       </div>
     </div>
   );

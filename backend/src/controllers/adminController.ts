@@ -10,9 +10,63 @@ import { sendWelcomeEmail } from "../utils/sendEmail";
 import Teacher from "../models/teacherModel";
 import { getAll } from "../utils/factory";
 
-export const getAllTeachers = getAll(Teacher, [
-  { path: "userId", select: "name" },
-]);
+export const getAllTeachers = catchAsync(async (req, res) => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 20;
+  const [stats] = await Teacher.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalTeachers: { $sum: 1 },
+        totalQualifications: { $addToSet: "$qualification" },
+        totalSubjects: { $sum: { $size: "$subjectIds" } },
+        totalGrades: { $sum: { $size: "$grades" } },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        totalTeachers: 1,
+        totalSubjects: 1,
+        totalGrades: 1,
+        totalQualifications: { $size: "$totalQualifications" },
+      },
+    },
+  ]);
+
+  const total = await Teacher.countDocuments();
+  const teacher = await Teacher.findOne({
+    _id: "6a5cf2c19b5ac554b8b164ca",
+  });
+  console.log(teacher?.subjectIds);
+
+  const teacher2 = await Teacher.findOne({
+    _id: "6a5cf2c19b5ac554b8b164ca",
+  }).populate("subjectIds");
+  console.log(teacher2?.subjectIds);
+
+  const teachers = await Teacher.find()
+    .populate({
+      path: "userId",
+      select: "name",
+    })
+    .populate("grades", "name")
+    .populate("subjectIds", "name");
+
+  resHandler(res, 200, "teachers", {
+    page,
+    results: teachers.length,
+    total,
+    totalPages: Math.ceil(total / limit),
+    teachers: teachers,
+    stats: stats ?? {
+      totalTeachers: 0,
+      totalSubjects: 0,
+      totalGrades: 0,
+      totalQualifications: 0,
+    },
+  });
+});
 
 export const createStudent = catchAsync(async (req, res, next) => {
   const { name, email, gradeId, phone, gender } = req.body;

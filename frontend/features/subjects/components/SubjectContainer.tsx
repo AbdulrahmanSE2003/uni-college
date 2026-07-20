@@ -70,7 +70,7 @@ const SubjectContainer = () => {
     label: g.name,
     value: g._id,
   }));
-  const teacherOptions = teachers.teachers.map((t) => ({
+  const teacherOptions = teachers.teachers.teachers.map((t) => ({
     label: t.userId?.name,
     value: t._id,
   }));

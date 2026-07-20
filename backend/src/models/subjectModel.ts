@@ -38,18 +38,22 @@ subjectSchema.index({ name: 1, gradeId: 1 });
 subjectSchema.index({ gradeId: 1 });
 
 subjectSchema.post("save", async function () {
+  console.log("POST SAVE HOOK");
+  console.log(this.teacherId);
   // Add to all students in this grade
   await Student.updateMany(
     { gradeId: this.gradeId },
     { $addToSet: { subjectIds: this._id } },
   );
+  console.log(this._id);
 
-  // Add to assigned teacher
-  await Teacher.findOneAndUpdate(
-    { userId: this.teacherId },
+  const teacher = await Teacher.findByIdAndUpdate(
+    this.teacherId,
     { $addToSet: { subjectIds: this._id } },
-    { returnDocument: "after" },
+    { new: true },
   );
+
+  console.log(teacher?.subjectIds);
 });
 
 subjectSchema.pre("findOneAndDelete", async function () {
@@ -57,8 +61,8 @@ subjectSchema.pre("findOneAndDelete", async function () {
   if (!subject) return;
 
   // Remove from all students
-  await Student.updateMany(
-    { gradeId: subject.gradeId },
+  await Teacher.findOneAndUpdate(
+    { _id: subject.teacherId },
     { $pull: { subjectIds: subject._id } },
   );
 

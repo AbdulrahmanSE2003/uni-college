@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 import { toast } from "sonner";
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const { data, isPending, error } = useGetMe();
+  const { data, isPending, isError } = useGetMe();
   const setUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {
@@ -28,10 +28,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
     );
   }
 
-  if (error || !data?.user) {
+  if (isError) {
     toast.info("You need to login first.");
     redirect("/login");
-    return null;
   }
 
   return (
